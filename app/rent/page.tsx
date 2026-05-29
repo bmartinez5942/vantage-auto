@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { CatalogVehicleCard } from '@/components/CatalogVehicleCard';
 import { FilterRail } from './FilterRail';
 import { groupedCatalog, countCatalog } from '@/lib/autoCatalog';
+import { fetchApprovedPricing } from '@/lib/pricing';
 
 export const metadata: Metadata = {
   title: 'Rent a Vehicle — Vantage Auto',
@@ -13,10 +14,11 @@ type SearchParams = {
   body?: string;
 };
 
-export default function RentPage({ searchParams }: { searchParams: SearchParams }) {
+export default async function RentPage({ searchParams }: { searchParams: SearchParams }) {
   const filter = { cat: searchParams.cat || undefined, body: searchParams.body || undefined };
   const groups = groupedCatalog(filter);
   const total = countCatalog(filter);
+  const pricing = await fetchApprovedPricing();
 
   return (
     <>
@@ -48,7 +50,7 @@ export default function RentPage({ searchParams }: { searchParams: SearchParams 
                     <h3 className="catalog-group-title">{group.title}</h3>
                     <div className="va-vehicle-grid">
                       {cards.map((c) => (
-                        <CatalogVehicleCard key={c.id} vehicle={c} />
+                        <CatalogVehicleCard key={c.id} vehicle={c} dailyRate={pricing[c.id]?.dailyRate ?? null} />
                       ))}
                     </div>
                   </div>

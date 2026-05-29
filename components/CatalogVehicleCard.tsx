@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Heart } from 'lucide-react';
 import { BODY_STYLE_LABEL, type AutoVehicleCard } from '@/lib/autoCatalog';
+import { formatCurrency } from '@/lib/format';
 
 const CATEGORY_LABEL: Record<AutoVehicleCard['category'], string> = {
   luxury: 'Luxury',
@@ -21,9 +22,12 @@ const CATEGORY_LABEL: Record<AutoVehicleCard['category'], string> = {
 export function CatalogVehicleCard({
   vehicle,
   href = '/contact',
+  dailyRate = null,
 }: {
   vehicle: AutoVehicleCard;
   href?: string;
+  /** Admin-approved daily rate. Only shown when present (live + linked). */
+  dailyRate?: number | null;
 }) {
   const [failed, setFailed] = useState(false);
   const showImage = vehicle.status === 'active' && Boolean(vehicle.imageUrl) && !failed;
@@ -51,6 +55,9 @@ export function CatalogVehicleCard({
           <span>{body}</span>
           <span>{vehicle.minYear}+</span>
         </div>
+        {dailyRate != null && dailyRate > 0 && (
+          <p className="va-price">From <strong>{formatCurrency(dailyRate)}</strong> / day</p>
+        )}
         <a className="va-details-button" href={href} aria-label={`Request to book ${vehicle.displayName}`}>
           Request to Book
         </a>

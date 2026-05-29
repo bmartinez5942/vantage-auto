@@ -6,9 +6,10 @@ import { Car, UserRound, Search, Calendar, Star, Plus } from 'lucide-react';
 import { SearchBar } from '@/components/SearchBar';
 import { CatalogVehicleCard } from '@/components/CatalogVehicleCard';
 import { featuredAutoCards } from '@/lib/autoCatalog';
+import { fetchApprovedPricing } from '@/lib/pricing';
 import { AUTO } from '@/lib/branding';
 
-export const revalidate = 3600;
+export const revalidate = 600;
 
 const BRAND = AUTO.name;
 
@@ -50,7 +51,8 @@ const pairingCta: React.CSSProperties = {
   border: '1px solid rgba(212,170,112,.5)', textAlign: 'center', fontWeight: 750,
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const pricing = await fetchApprovedPricing();
   return (
     <div className="va-page">
       {/* HERO */}
@@ -94,7 +96,7 @@ export default function HomePage() {
         </div>
         <div className="va-vehicle-grid">
           {featured.map((v) => (
-            <CatalogVehicleCard key={v.id} vehicle={v} />
+            <CatalogVehicleCard key={v.id} vehicle={v} dailyRate={pricing[v.id]?.dailyRate ?? null} />
           ))}
         </div>
       </section>
