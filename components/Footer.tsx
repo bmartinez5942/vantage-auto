@@ -52,7 +52,11 @@ export function Footer() {
         </div>
 
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} {AUTO.legalName}. All rights reserved.</span>
+          <span>
+            © {new Date().getFullYear()} {AUTO.legalName}. All rights reserved.
+            <span className="footer-dot">·</span>
+            <Link href="/attributions" className="footer-bottom-link">Image credits</Link>
+          </span>
           <span className="gold">Designed for the journey ahead.</span>
         </div>
       </div>
