@@ -25,11 +25,3 @@ export function formatDate(iso: string | null | undefined): string {
     year: 'numeric',
   });
 }
-
-/** Inclusive nights/days between two ISO dates. Returns at least 1. */
-export function rentalDays(startIso: string, endIso: string): number {
-  const a = new Date(startIso + 'T00:00:00');
-  const b = new Date(endIso + 'T00:00:00');
-  const diff = Math.round((b.getTime() - a.getTime()) / 86_400_000);
-  return Math.max(1, diff);
-}
