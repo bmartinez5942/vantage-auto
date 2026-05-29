@@ -3,7 +3,7 @@ import { SearchBar } from '@/components/SearchBar';
 import { VehicleCard } from '@/components/VehicleCard';
 import { fetchFeaturedVehicles } from '@/lib/vehicles';
 import {
-  IconCar, IconKey, IconSearch, IconShield, IconCalendar, IconStar, IconArrow, IconPlus,
+  IconCar, IconKey, IconSearch, IconShield, IconCalendar, IconStar, IconArrow, IconPlus, IconHeart,
 } from '@/components/icons';
 
 export const revalidate = 300;
@@ -17,14 +17,14 @@ const SERVICES = [
     title: 'Rent a Vehicle',
     body: 'Browse our curated collection of premium vehicles and book directly.',
     href: '/rent',
-    img: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1200&q=80',
+    img: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1200&q=80',
   },
   {
     icon: <IconKey />,
     title: 'Host Your Vehicle',
     body: 'Turn your vehicle into income with our seamless hosting platform.',
     href: '/host',
-    img: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=1200&q=80',
+    img: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1200&q=80',
   },
   {
     icon: <IconSearch />,
@@ -52,6 +52,15 @@ export default async function HomePage() {
         <div className="hero-bg">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={HERO_IMG} alt="" />
+        </div>
+        {/* Gold badge anchoring Vantage Auto to the Auren family — top-right
+            overlay, mirrors the concept render. */}
+        <div className="hero-badge" aria-hidden="true">
+          <span className="hero-badge-mark">A</span>
+          <span className="hero-badge-text">
+            <span className="hero-badge-kicker">From the family of</span>
+            AUREN RESIDENCES
+          </span>
         </div>
         <div className="container">
           <div className="hero-inner fade">
@@ -156,6 +165,7 @@ export default async function HomePage() {
                   <div className="bundle-mini-label">Your Stay</div>
                   <div className="bundle-mini-title">Auren Residences Miami</div>
                   <div className="bundle-mini-meta">1 Night · Brickell</div>
+                  <a href="https://vantagestays.miami" target="_blank" rel="noreferrer" className="bundle-mini-btn">View Reservation</a>
                 </div>
               </div>
               <div className="bundle-plus" aria-hidden="true"><IconPlus /></div>
@@ -163,11 +173,13 @@ export default async function HomePage() {
                 <div className="bundle-mini-media">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy" />
+                  <button type="button" className="bundle-mini-fav" aria-label="Save this vehicle"><IconHeart /></button>
                 </div>
                 <div className="bundle-mini-body">
                   <div className="bundle-mini-label">Recommended Vehicle</div>
                   <div className="bundle-mini-title">BMW X5 xDrive40i</div>
                   <div className="bundle-mini-meta">$165 / day</div>
+                  <Link href="/rent" className="bundle-mini-btn bundle-mini-btn-gold">Add to Reservation</Link>
                 </div>
               </div>
             </div>

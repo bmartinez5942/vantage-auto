@@ -55,3 +55,12 @@ export const IconRoad = (p: P) => (
 export const IconPlus = (p: P) => (
   <svg {...base} {...p}><path d="M12 5v14M5 12h14" /></svg>
 );
+export const IconInstagram = (p: P) => (
+  <svg {...base} {...p}><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17" cy="7" r="0.5" /></svg>
+);
+export const IconLinkedIn = (p: P) => (
+  <svg {...base} {...p}><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 0 1 4 0v4M11 11v6" /></svg>
+);
+export const IconYouTube = (p: P) => (
+  <svg {...base} {...p}><rect x="3" y="6" width="18" height="12" rx="3" /><path d="m11 9.5 4 2.5-4 2.5z" /></svg>
+);

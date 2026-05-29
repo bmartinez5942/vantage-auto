@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { AUTO } from '@/lib/branding';
+import { IconInstagram, IconLinkedIn, IconYouTube } from '@/components/icons';
 
 export function Footer() {
   return (
@@ -16,6 +17,11 @@ export function Footer() {
               Premium vehicle rentals, hosting, and sourcing — part of the Auren ecosystem alongside
               Vantage Stays.
             </p>
+            <div className="footer-social" aria-label="Follow Vantage Auto">
+              <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram"><IconInstagram /></a>
+              <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn"><IconLinkedIn /></a>
+              <a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube"><IconYouTube /></a>
+            </div>
           </div>
 
           <div className="footer-col">
@@ -33,17 +39,27 @@ export function Footer() {
           </div>
 
           <div className="footer-col">
+            <h6>Support</h6>
+            <Link href="/contact">Help &amp; Contact</Link>
+            <Link href="/rent">Browse Vehicles</Link>
+            <Link href="/host">List Your Vehicle</Link>
+            <a href={`mailto:${AUTO.email}`}>{AUTO.email}</a>
+          </div>
+        </div>
+
+        <div className="footer-sub-band">
+          <div className="footer-sub-copy">
             <h6>Stay in the know</h6>
             <p className="footer-blurb" style={{ marginTop: 0 }}>
               Be the first to see new vehicles and seasonal offers.
             </p>
-            <form className="footer-sub-input" action={`mailto:${AUTO.email}`} method="get">
-              <input type="email" name="email" placeholder="Enter your email" aria-label="Email" />
-              <button type="submit" className="btn-primary btn-sm" aria-label="Subscribe">
-                →
-              </button>
-            </form>
           </div>
+          <form className="footer-sub-input" action={`mailto:${AUTO.email}`} method="get">
+            <input type="email" name="email" placeholder="Enter your email" aria-label="Email" />
+            <button type="submit" className="btn-primary btn-sm" aria-label="Subscribe">
+              →
+            </button>
+          </form>
         </div>
 
         <div className="footer-bottom">
