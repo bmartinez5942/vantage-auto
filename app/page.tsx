@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { SearchBar } from '@/components/SearchBar';
-import { VehicleCard } from '@/components/VehicleCard';
-import { fetchFeaturedVehicles } from '@/lib/vehicles';
+import { CatalogVehicleCard } from '@/components/CatalogVehicleCard';
+import { AUTO_CARD_GROUPS, cardsForGroup } from '@/lib/autoCatalog';
 import {
   IconCar, IconKey, IconSearch, IconShield, IconCalendar, IconStar, IconArrow, IconPlus, IconHeart,
 } from '@/components/icons';
@@ -42,9 +42,7 @@ const WHY = [
   { icon: <IconKey />, title: 'Integrated with Auren', body: 'Seamlessly connected to the Auren ecosystem for a unified, end-to-end experience.' },
 ];
 
-export default async function HomePage() {
-  const featured = await fetchFeaturedVehicles(4);
-
+export default function HomePage() {
   return (
     <>
       {/* HERO */}
@@ -106,22 +104,28 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* FEATURED */}
+      {/* FEATURED CATALOG — controlled list, grouped by category. Images and
+          labels are guaranteed to match (see lib/autoCatalog.ts). */}
       <section className="section-tight">
         <div className="container">
           <div className="section-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
             <h2 className="section-title">Featured <em>Vehicles</em></h2>
             <Link href="/rent" className="service-card-link">View All Vehicles <IconArrow /></Link>
           </div>
-          {featured.length === 0 ? (
-            <div className="empty-state">New vehicles are being added to the collection — check back shortly.</div>
-          ) : (
-            <ul className="vehicle-grid">
-              {featured.map((v) => (
-                <VehicleCard key={v.id} vehicle={v} />
-              ))}
-            </ul>
-          )}
+          {AUTO_CARD_GROUPS.map((group) => {
+            const cards = cardsForGroup(group);
+            if (cards.length === 0) return null;
+            return (
+              <div key={group.key} className="catalog-group">
+                <h3 className="catalog-group-title">{group.title}</h3>
+                <ul className="vehicle-grid">
+                  {cards.map((c) => (
+                    <CatalogVehicleCard key={c.id} vehicle={c} />
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
         </div>
       </section>
 
