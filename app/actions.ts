@@ -217,6 +217,53 @@ export async function submitHostListing(
   };
 }
 
+// ============================ CONTACT MESSAGE ============================
+const contactSchema = z.object({
+  name: nameRule,
+  email: emailRule,
+  phone: z.string().trim().max(40).optional(),
+  subject: z.string().trim().max(160).optional(),
+  message: z.string().trim().min(5, 'Please enter a short message.').max(4000),
+});
+
+export async function submitContactMessage(
+  _prev: FormResult,
+  formData: FormData,
+): Promise<FormResult> {
+  if (trapped(formData)) return { ok: true, message: 'Message received.' };
+
+  const parsed = contactSchema.safeParse({
+    name: formData.get('name'),
+    email: formData.get('email'),
+    phone: formData.get('phone') ?? undefined,
+    subject: formData.get('subject') ?? undefined,
+    message: formData.get('message'),
+  });
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? 'Please check the form.' };
+  }
+  const d = parsed.data;
+
+  const sb = serverClient();
+  const { error } = await sb.from('contact_messages').insert({
+    name: d.name,
+    email: d.email,
+    phone: d.phone || null,
+    subject: d.subject || null,
+    message: d.message,
+    source: 'vantage-auto',
+    status: 'new',
+  });
+  if (error) {
+    console.error('submitContactMessage insert:', error.message);
+    return { ok: false, error: 'Something went wrong sending your message. Please try again.' };
+  }
+  return {
+    ok: true,
+    message: 'Thanks for reaching out — your message has been received and our team will reply by email shortly.',
+  };
+}
+
 // ============================ SOURCE REQUEST ============================
 const sourceSchema = z.object({
   fullName: nameRule,

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { AUTO } from '@/lib/branding';
 import { IconPin, IconKey, IconCar } from '@/components/icons';
+import { ContactForm } from './ContactForm';
 
 export const metadata: Metadata = {
   title: 'Contact — Vantage Auto',
@@ -41,6 +42,15 @@ export default function ContactPage() {
               <p><Link href="/rent" style={{ color: 'var(--gold)' }}>Browse the collection →</Link></p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="section-tight">
+        <div className="container" style={{ maxWidth: 760 }}>
+          <h2 className="section-title" style={{ marginBottom: 18 }}>
+            Send Us a <em>Message</em>
+          </h2>
+          <ContactForm />
         </div>
       </section>
     </>
