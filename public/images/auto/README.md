@@ -1,10 +1,13 @@
 # Vantage Auto — featured vehicle images
 
-Drop **verified** photos here using the EXACT filenames below. The filename is
-the contract: the catalog (`lib/autoCatalog.ts`) points each card at one path,
-and the card shows an "Image coming soon" placeholder until that exact file
-exists. Never substitute a different model — a wrong photo is worse than no
-photo.
+**Status:** all 9 cards now have verified images in place (sourced from
+Wikimedia Commons, each checked against its label — see `CREDITS.md`).
+
+To swap in your own brand photography later, just replace the file at the same
+filename — no code change needed. The filename is the contract: the catalog
+(`lib/autoCatalog.ts`) points each card at one path, and the card shows an
+"Image coming soon" placeholder if that exact file is missing. Never substitute
+a different model — a wrong photo is worse than no photo.
 
 | Filename                     | Must be a photo of                         | Body style |
 | ---------------------------- | ------------------------------------------ | ---------- |
