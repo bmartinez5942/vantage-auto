@@ -1,7 +1,7 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
+import { Heart } from 'lucide-react';
 import { BODY_STYLE_LABEL, type AutoVehicleCard } from '@/lib/autoCatalog';
 
 const CATEGORY_LABEL: Record<AutoVehicleCard['category'], string> = {
@@ -13,9 +13,10 @@ const CATEGORY_LABEL: Record<AutoVehicleCard['category'], string> = {
 };
 
 /**
- * Renders a controlled catalog card. The image is only shown when it loads
- * successfully AND the card is `active`; otherwise a clean "Image coming soon"
- * placeholder is shown. We never substitute a different vehicle's photo.
+ * Controlled catalog card (.va- design). The verified image covers the
+ * "Image coming soon" placeholder once it loads; a missing/404 image never
+ * shows a broken icon or a wrong vehicle. No price is shown — pricing is
+ * admin-approved only — and the CTA is request-to-book (no instant booking).
  */
 export function CatalogVehicleCard({
   vehicle,
@@ -26,41 +27,34 @@ export function CatalogVehicleCard({
 }) {
   const [failed, setFailed] = useState(false);
   const showImage = vehicle.status === 'active' && Boolean(vehicle.imageUrl) && !failed;
+  const body = BODY_STYLE_LABEL[vehicle.bodyStyle];
 
   return (
-    <li>
-      <Link href={href} className="vehicle-card" aria-label={`Request to book ${vehicle.displayName}`}>
-        <div className="vehicle-photo">
-          {/* Placeholder is always the base layer, so a missing/404 image never
-              flashes a broken icon or a wrong vehicle — the verified photo (once
-              added at the exact path) simply covers it. */}
-          <div className="vehicle-photo-soon" aria-hidden="true">
-            <span className="vehicle-photo-soon-body">{BODY_STYLE_LABEL[vehicle.bodyStyle]}</span>
-            <span className="vehicle-photo-soon-label">Image coming soon</span>
-          </div>
-          {showImage && (
-            // alt="" is intentional: the card's Link already carries the
-            // accessible name, and an empty alt avoids a broken-text flash.
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              className="vehicle-photo-img"
-              src={vehicle.imageUrl}
-              alt=""
-              loading="lazy"
-              onError={() => setFailed(true)}
-            />
-          )}
-          <span className="vehicle-cat-chip">{CATEGORY_LABEL[vehicle.category]}</span>
+    <article className="va-vehicle-card">
+      <div className="va-vehicle-image">
+        <div className="va-soon" aria-hidden="true">
+          <span className="va-soon-body">{body}</span>
+          <span className="va-soon-label">Image coming soon</span>
         </div>
-        <div className="vehicle-body">
-          <div className="vehicle-name">{vehicle.displayName}</div>
-          <div className="vehicle-meta">
-            <span className="vehicle-meta-item">{BODY_STYLE_LABEL[vehicle.bodyStyle]}</span>
-            <span className="vehicle-meta-item">{vehicle.minYear}+</span>
-          </div>
-          <span className="vehicle-details-btn" style={{ marginTop: 'auto' }}>Request to Book</span>
+        {showImage && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img className="va-img" src={vehicle.imageUrl} alt="" loading="lazy" onError={() => setFailed(true)} />
+        )}
+        <div className="va-category-pill">{CATEGORY_LABEL[vehicle.category]}</div>
+        <button className="va-heart-button" type="button" aria-label={`Save ${vehicle.displayName}`}>
+          <Heart size={18} />
+        </button>
+      </div>
+      <div className="va-vehicle-body">
+        <h3>{vehicle.displayName}</h3>
+        <div className="va-vehicle-specs">
+          <span>{body}</span>
+          <span>{vehicle.minYear}+</span>
         </div>
-      </Link>
-    </li>
+        <a className="va-details-button" href={href} aria-label={`Request to book ${vehicle.displayName}`}>
+          Request to Book
+        </a>
+      </div>
+    </article>
   );
 }

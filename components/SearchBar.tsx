@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { IconArrow } from './icons';
+import { Calendar, MapPin, Car, ChevronDown } from 'lucide-react';
 import { AUTO } from '@/lib/branding';
 import { CATEGORY_OPTIONS } from '@/lib/autoCatalog';
 
@@ -11,6 +11,24 @@ function isoOffset(days: number) {
   d.setDate(d.getDate() + days);
   return d.toISOString().slice(0, 10);
 }
+
+const fieldInput: React.CSSProperties = {
+  background: 'transparent',
+  border: 0,
+  outline: 'none',
+  color: 'inherit',
+  font: 'inherit',
+  fontWeight: 650,
+  width: '100%',
+};
+
+const fieldSelect: React.CSSProperties = {
+  ...fieldInput,
+  appearance: 'none',
+  WebkitAppearance: 'none',
+  MozAppearance: 'none',
+  cursor: 'pointer',
+};
 
 export function SearchBar({ defaults }: { defaults?: { pickup?: string; ret?: string; location?: string; cat?: string } }) {
   const router = useRouter();
@@ -30,35 +48,55 @@ export function SearchBar({ defaults }: { defaults?: { pickup?: string; ret?: st
   }
 
   return (
-    <form className="searchbar" onSubmit={search}>
-      <div className="search-field">
-        <label htmlFor="sb-pickup">Pick-up Date</label>
-        <input id="sb-pickup" type="date" value={pickup} onChange={(e) => setPickup(e.target.value)} />
-      </div>
-      <div className="search-field">
-        <label htmlFor="sb-return">Return Date</label>
-        <input id="sb-return" type="date" value={ret} min={pickup} onChange={(e) => setRet(e.target.value)} />
-      </div>
-      <div className="search-field">
-        <label htmlFor="sb-loc">Location</label>
-        <select id="sb-loc" value={location} onChange={(e) => setLocation(e.target.value)}>
-          {AUTO.cities.map((c) => (
-            <option key={c} value={c}>{c}</option>
-          ))}
-        </select>
-      </div>
-      <div className="search-field">
-        <label htmlFor="sb-type">Vehicle Type</label>
-        <select id="sb-type" value={cat} onChange={(e) => setCat(e.target.value)}>
-          <option value="">All Types</option>
-          {CATEGORY_OPTIONS.map((c) => (
-            <option key={c.value} value={c.value}>{c.label}</option>
-          ))}
-        </select>
-      </div>
-      <button type="submit" className="btn-primary">
-        Search Vehicles <IconArrow />
-      </button>
-    </form>
+    <section className="va-search-wrap">
+      <form className="va-search-panel" onSubmit={search}>
+        <div className="va-search-field">
+          <label htmlFor="sb-pickup">Pickup Date</label>
+          <div>
+            <Calendar size={17} />
+            <input id="sb-pickup" type="date" value={pickup} onChange={(e) => setPickup(e.target.value)} style={fieldInput} />
+          </div>
+        </div>
+
+        <div className="va-search-field">
+          <label htmlFor="sb-return">Return Date</label>
+          <div>
+            <Calendar size={17} />
+            <input id="sb-return" type="date" value={ret} min={pickup} onChange={(e) => setRet(e.target.value)} style={fieldInput} />
+          </div>
+        </div>
+
+        <div className="va-search-field">
+          <label htmlFor="sb-loc">Location</label>
+          <div>
+            <MapPin size={17} />
+            <select id="sb-loc" value={location} onChange={(e) => setLocation(e.target.value)} style={fieldSelect}>
+              {AUTO.cities.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+            <ChevronDown size={15} />
+          </div>
+        </div>
+
+        <div className="va-search-field">
+          <label htmlFor="sb-type">Vehicle Type</label>
+          <div>
+            <Car size={17} />
+            <select id="sb-type" value={cat} onChange={(e) => setCat(e.target.value)} style={fieldSelect}>
+              <option value="">All Types</option>
+              {CATEGORY_OPTIONS.map((c) => (
+                <option key={c.value} value={c.value}>{c.label}</option>
+              ))}
+            </select>
+            <ChevronDown size={15} />
+          </div>
+        </div>
+
+        <button type="submit" className="va-search-button">
+          Search Vehicles <span>→</span>
+        </button>
+      </form>
+    </section>
   );
 }

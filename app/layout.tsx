@@ -44,13 +44,14 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
 };
 
-// No-flash theme bootstrap: set data-theme from localStorage/cookie before paint.
-// Defaults to dark to match the primary brand render.
-const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem('va-theme');if(!t){var m=document.cookie.match(/(?:^|; )va-theme=([^;]+)/);t=m?m[1]:null;}if(t!=='light'&&t!=='dark')t='dark';document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme='dark';}})();`;
+// No-flash theme bootstrap: set data-theme (token palette) AND the .va-dark/
+// .va-light class (the approved .va- layout system) from localStorage/cookie
+// before paint. Defaults to dark.
+const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem('va-theme');if(!t){var m=document.cookie.match(/(?:^|; )va-theme=([^;]+)/);t=m?m[1]:null;}if(t!=='light'&&t!=='dark')t='dark';var d=document.documentElement;d.dataset.theme=t;d.classList.remove('va-dark','va-light');d.classList.add('va-'+t);}catch(e){var d=document.documentElement;d.dataset.theme='dark';d.classList.add('va-dark');}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${serif.variable} ${sans.variable}`} data-theme="dark" suppressHydrationWarning>
+    <html lang="en" className={`${serif.variable} ${sans.variable} va-dark`} data-theme="dark" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>

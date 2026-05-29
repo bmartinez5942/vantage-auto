@@ -3,20 +3,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { AUTO, NAV_LINKS } from '@/lib/branding';
 
-// Single, consistent wordmark: the gold "V" monogram followed by the
-// clean "VANTAGE AUTO" wordmark. No dotted letters, no duplicate V.
-function Wordmark() {
-  return (
-    <>
-      <span className="brand-mark">V</span>
-      <span className="brand-name">Vantage</span>
-      <span className="brand-suffix">Auto</span>
-    </>
-  );
-}
+// Desktop nav stays to the three primary actions (matches the approved render);
+// About/Contact live in the footer and the mobile menu.
+const DESKTOP_NAV = NAV_LINKS.slice(0, 3);
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -26,79 +19,41 @@ export function Header() {
     setOpen(false);
   }, [pathname]);
 
-  useEffect(() => {
-    const original = document.body.style.overflow;
-    document.body.style.overflow = open ? 'hidden' : original;
-    return () => {
-      document.body.style.overflow = original;
-    };
-  }, [open]);
-
   return (
-    <>
-      <header className="header">
-        <div className="container header-inner">
-          <Link href="/" className="brand-wordmark" aria-label="Vantage Auto — home">
-            <Wordmark />
-          </Link>
+    <header className="va-header">
+      <Link href="/" className="va-brand" aria-label={`${AUTO.name} — home`}>
+        <span className="va-brand-mark">V</span>
+        <span>{AUTO.name}</span>
+      </Link>
 
-          <nav className="nav-desktop" aria-label="Primary">
-            {NAV_LINKS.map((l) => (
-              <Link key={l.href} href={l.href}>
-                {l.label}
-              </Link>
-            ))}
-            <ThemeToggle />
-            <Link href="/rent" className="btn-primary btn-sm">
-              Book Now
-            </Link>
-          </nav>
+      <nav className="va-desktop-nav" aria-label="Primary">
+        {DESKTOP_NAV.map((l) => (
+          <Link key={l.href} href={l.href}>{l.label}</Link>
+        ))}
+      </nav>
 
-          <div className="nav-mobile-cluster">
-            <ThemeToggle />
-            <button
-              type="button"
-              className="nav-menu-btn"
-              aria-label={open ? 'Close menu' : 'Open menu'}
-              aria-expanded={open}
-              onClick={() => setOpen((v) => !v)}
-            >
-              {open ? (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                </svg>
-              ) : (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                  <line x1="4" y1="7" x2="20" y2="7" />
-                  <line x1="4" y1="12" x2="20" y2="12" />
-                  <line x1="4" y1="17" x2="20" y2="17" />
-                </svg>
-              )}
-            </button>
-          </div>
-        </div>
-      </header>
+      <div className="va-header-actions">
+        <ThemeToggle />
+        <Link href="/rent" className="va-book-button">Book Now</Link>
+        <button
+          type="button"
+          className="va-mobile-menu-button"
+          onClick={() => setOpen((v) => !v)}
+          aria-label={open ? 'Close menu' : 'Open menu'}
+          aria-expanded={open}
+        >
+          {open ? <X size={22} /> : <Menu size={22} />}
+        </button>
+      </div>
 
-      <div className={`scrim${open ? ' open' : ''}`} onClick={() => setOpen(false)} aria-hidden="true" />
-      <aside className={`mobile-drawer${open ? ' open' : ''}`} aria-hidden={!open}>
-        <div className="brand-wordmark">
-          <Wordmark />
-        </div>
-        <nav className="mobile-drawer-nav" aria-label="Mobile">
-          <Link href="/rent" className="mobile-drawer-cta">
-            Book Now →
-          </Link>
+      {open && (
+        <div className="va-mobile-menu">
           {NAV_LINKS.map((l) => (
-            <Link key={l.href} href={l.href}>
-              {l.label}
-            </Link>
+            <Link key={l.href} href={l.href} onClick={() => setOpen(false)}>{l.label}</Link>
           ))}
-        </nav>
-        <div className="mobile-drawer-foot">
-          <a href={`mailto:${AUTO.email}`}>{AUTO.email}</a>
+          <Link href="/rent" onClick={() => setOpen(false)}>Book Now</Link>
         </div>
-      </aside>
-    </>
+      )}
+    </header>
   );
 }

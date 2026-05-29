@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { SearchBar } from '@/components/SearchBar';
 import { CatalogVehicleCard } from '@/components/CatalogVehicleCard';
 import { FilterRail } from './FilterRail';
 import { groupedCatalog, countCatalog } from '@/lib/autoCatalog';
@@ -12,9 +11,6 @@ export const metadata: Metadata = {
 type SearchParams = {
   cat?: string;
   body?: string;
-  pickup?: string;
-  return?: string;
-  location?: string;
 };
 
 export default function RentPage({ searchParams }: { searchParams: SearchParams }) {
@@ -34,17 +30,6 @@ export default function RentPage({ searchParams }: { searchParams: SearchParams 
         </p>
       </div>
 
-      <div className="container" style={{ marginTop: 18 }}>
-        <SearchBar
-          defaults={{
-            pickup: searchParams.pickup,
-            ret: searchParams.return,
-            location: searchParams.location,
-            cat: searchParams.cat,
-          }}
-        />
-      </div>
-
       <section className="section-tight">
         <div className="container">
           <div className="rent-layout">
@@ -61,11 +46,11 @@ export default function RentPage({ searchParams }: { searchParams: SearchParams 
                 groups.map(({ group, cards }) => (
                   <div key={group.key} className="catalog-group">
                     <h3 className="catalog-group-title">{group.title}</h3>
-                    <ul className="vehicle-grid">
+                    <div className="va-vehicle-grid">
                       {cards.map((c) => (
                         <CatalogVehicleCard key={c.id} vehicle={c} />
                       ))}
-                    </ul>
+                    </div>
                   </div>
                 ))
               )}
