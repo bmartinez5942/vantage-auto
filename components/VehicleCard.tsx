@@ -39,8 +39,8 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
             <span className="vehicle-price">
               From <strong>{formatCurrency(vehicle.daily_rate)}</strong> <span className="per">/ day</span>
             </span>
-            <span className="vehicle-view">View Details →</span>
           </div>
+          <span className="vehicle-details-btn">View Details</span>
         </div>
       </Link>
     </li>

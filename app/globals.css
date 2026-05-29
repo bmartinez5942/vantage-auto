@@ -26,7 +26,9 @@
   --input-border: #2f2f36;
   --shadow-card: 0 24px 60px -28px rgba(0,0,0,0.6);
   --shadow-soft: 0 10px 30px -18px rgba(0,0,0,0.5);
-  --hero-scrim: linear-gradient(180deg, rgba(10,10,12,0.55) 0%, rgba(10,10,12,0.25) 35%, rgba(10,10,12,0.78) 100%);
+  --hero-scrim: linear-gradient(90deg, rgba(8,8,11,0.94) 0%, rgba(8,8,11,0.70) 40%, rgba(8,8,11,0.20) 76%, rgba(8,8,11,0.04) 100%);
+  --hero-text: #f4eee0;
+  --hero-sub: rgba(240,234,220,0.86);
   --glow: rgba(212,173,110,0.06);
   color-scheme: dark;
 }
@@ -52,7 +54,9 @@
   --input-border: #e2d8c6;
   --shadow-card: 0 24px 60px -30px rgba(80,60,25,0.22);
   --shadow-soft: 0 12px 30px -20px rgba(80,60,25,0.18);
-  --hero-scrim: linear-gradient(180deg, rgba(20,16,10,0.40) 0%, rgba(20,16,10,0.12) 38%, rgba(20,16,10,0.55) 100%);
+  --hero-scrim: linear-gradient(90deg, rgba(247,243,236,0.97) 0%, rgba(247,243,236,0.82) 42%, rgba(247,243,236,0.24) 78%, rgba(247,243,236,0.0) 100%);
+  --hero-text: #1f1a12;
+  --hero-sub: rgba(31,26,18,0.74);
   --glow: rgba(176,134,60,0.05);
   color-scheme: light;
 }
@@ -159,13 +163,25 @@ main { flex: 1; }
 .nav-desktop a:hover { color: var(--text); }
 .nav-cta { }
 
-.icon-btn {
-  width: 38px; height: 38px; border-radius: 9px; display: grid; place-items: center;
-  background: transparent; border: 1px solid var(--hairline); color: var(--text-dim);
-  transition: all 0.2s ease;
+/* Sun · sliding-dot · moon pill */
+.theme-switch {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: transparent; border: none; color: var(--text-dim);
+  padding: 4px; transition: color 0.2s ease;
 }
-.icon-btn:hover { border-color: var(--gold); color: var(--gold); }
-.icon-btn svg { width: 18px; height: 18px; }
+.theme-switch:hover { color: var(--text); }
+.theme-switch-ico { display: grid; place-items: center; }
+.theme-switch-ico svg { width: 15px; height: 15px; }
+.theme-switch-track {
+  position: relative; width: 34px; height: 18px; border-radius: 999px;
+  border: 1px solid var(--hairline); background: var(--input-bg); flex: none;
+}
+.theme-switch-track::after {
+  content: ''; position: absolute; top: 2px; left: 3px;
+  width: 11px; height: 11px; border-radius: 50%; background: var(--gold);
+  transition: left 0.2s ease;
+}
+.theme-switch-track.is-dark::after { left: 18px; }
 
 .nav-mobile-cluster { display: none; align-items: center; gap: 10px; }
 .nav-menu-btn { width: 40px; height: 40px; border-radius: 9px; background: transparent; border: 1px solid var(--hairline); color: var(--text); display: grid; place-items: center; }
@@ -200,12 +216,14 @@ main { flex: 1; }
 .hero h1 {
   font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(46px, 7vw, 86px); line-height: 0.98; font-weight: 500; letter-spacing: -0.02em;
-  color: #f4eee0;
+  color: var(--hero-text);
 }
-[data-theme='light'] .hero h1 { color: #fbf6ec; }
 .hero h1 em { font-style: italic; color: var(--gold); }
-.hero-sub { margin-top: 22px; font-size: 18px; line-height: 1.55; color: rgba(240,234,220,0.86); max-width: 520px; }
+.hero-sub { margin-top: 22px; font-size: 18px; line-height: 1.55; color: var(--hero-sub); max-width: 520px; }
 .hero-actions { display: flex; gap: 14px; margin-top: 32px; flex-wrap: wrap; }
+/* Hero secondary button reads on the cinematic scrim in either theme. */
+.hero .btn-ghost { color: var(--hero-text); border-color: color-mix(in srgb, var(--hero-text) 38%, transparent); background: color-mix(in srgb, var(--bg) 16%, transparent); backdrop-filter: blur(6px); }
+.hero .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
 .hero-eyebrow { color: var(--gold); letter-spacing: 0.3em; text-transform: uppercase; font-size: 12px; margin-bottom: 18px; }
 .hero-badge { position: absolute; top: 28px; right: 28px; z-index: 3; display: flex; align-items: center; gap: 11px; padding: 10px 16px 10px 11px; border-radius: 999px; background: rgba(13,13,16,0.42); border: 1px solid rgba(212,173,110,0.45); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 .hero-badge-mark { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--gold); color: #15110a; font-family: var(--font-serif, Georgia, serif); font-size: 17px; font-weight: 600; line-height: 1; }
@@ -300,7 +318,13 @@ main { flex: 1; }
 .vehicle-price { font-size: 13px; color: var(--text-dim); }
 .vehicle-price strong { font-size: 20px; color: var(--text); font-weight: 600; }
 .vehicle-price .per { color: var(--text-faint); }
-.vehicle-view { font-size: 13px; color: var(--gold); }
+.vehicle-details-btn {
+  display: block; text-align: center; margin-top: 12px; padding: 11px 12px; border-radius: 9px;
+  border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent); color: var(--gold);
+  font-size: 13px; font-weight: 500; letter-spacing: 0.02em;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.vehicle-card:hover .vehicle-details-btn { background: var(--gold); color: var(--on-gold); border-color: var(--gold); }
 
 /* ============================ WHY GRID ============================ */
 .why-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }

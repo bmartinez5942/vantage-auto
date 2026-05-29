@@ -73,9 +73,7 @@ export default async function HomePage() {
             </p>
             <div className="hero-actions">
               <Link href="/rent" className="btn-primary">Rent a Vehicle</Link>
-              <Link href="/host" className="btn-ghost" style={{ color: '#f4eee0', borderColor: 'rgba(244,238,224,0.4)' }}>
-                List Your Vehicle
-              </Link>
+              <Link href="/host" className="btn-ghost">List Your Vehicle</Link>
             </div>
           </div>
         </div>
