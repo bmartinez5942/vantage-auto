@@ -1,40 +1,26 @@
 import type { Metadata } from 'next';
 import { SearchBar } from '@/components/SearchBar';
-import { VehicleCard } from '@/components/VehicleCard';
+import { CatalogVehicleCard } from '@/components/CatalogVehicleCard';
 import { FilterRail } from './FilterRail';
-import { fetchLiveVehicles, type VehicleFilters } from '@/lib/vehicles';
-
-export const revalidate = 120;
+import { groupedCatalog, countCatalog } from '@/lib/autoCatalog';
 
 export const metadata: Metadata = {
   title: 'Rent a Vehicle — Vantage Auto',
-  description: 'Browse the Vantage Auto collection and book the right vehicle for your stay, trip, or lifestyle.',
+  description: 'Browse the Vantage Auto collection and request the right vehicle for your stay, trip, or lifestyle.',
 };
 
 type SearchParams = {
-  type?: string;
-  transmission?: string;
-  seats?: string;
-  maxDaily?: string;
-  delivery?: string;
+  cat?: string;
+  body?: string;
   pickup?: string;
   return?: string;
   location?: string;
 };
 
-export default async function RentPage({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
-  const filters: VehicleFilters = {
-    category: searchParams.type || undefined,
-    transmission: searchParams.transmission || undefined,
-    seats: searchParams.seats ? Number(searchParams.seats) : undefined,
-    maxDaily: searchParams.maxDaily ? Number(searchParams.maxDaily) : undefined,
-    delivery: searchParams.delivery === '1' || undefined,
-  };
-  const vehicles = await fetchLiveVehicles(filters);
+export default function RentPage({ searchParams }: { searchParams: SearchParams }) {
+  const filter = { cat: searchParams.cat || undefined, body: searchParams.body || undefined };
+  const groups = groupedCatalog(filter);
+  const total = countCatalog(filter);
 
   return (
     <>
@@ -43,8 +29,8 @@ export default async function RentPage({
           The <em>Collection</em>
         </h1>
         <p className="section-sub">
-          Practical daily drivers, SUVs, premium vehicles, and specialty options — vehicles for every type of
-          trip, reviewed and managed to our platform standards.
+          A curated catalog — practical daily drivers, premium sedans, SUVs, and exotics. Every listing is a
+          controlled, verified model; request to book and our team confirms availability.
         </p>
       </div>
 
@@ -54,7 +40,7 @@ export default async function RentPage({
             pickup: searchParams.pickup,
             ret: searchParams.return,
             location: searchParams.location,
-            type: searchParams.type,
+            cat: searchParams.cat,
           }}
         />
       </div>
@@ -65,18 +51,23 @@ export default async function RentPage({
             <FilterRail />
             <div>
               <p className="muted" style={{ marginBottom: 18, fontSize: 14 }}>
-                {vehicles.length} {vehicles.length === 1 ? 'vehicle' : 'vehicles'} available
+                {total} {total === 1 ? 'vehicle' : 'vehicles'} in the collection
               </p>
-              {vehicles.length === 0 ? (
+              {groups.length === 0 ? (
                 <div className="empty-state">
-                  No vehicles match these filters yet. Try widening your search or clearing filters.
+                  No vehicles match these filters. Try clearing them to see the full collection.
                 </div>
               ) : (
-                <ul className="vehicle-grid">
-                  {vehicles.map((v) => (
-                    <VehicleCard key={v.id} vehicle={v} />
-                  ))}
-                </ul>
+                groups.map(({ group, cards }) => (
+                  <div key={group.key} className="catalog-group">
+                    <h3 className="catalog-group-title">{group.title}</h3>
+                    <ul className="vehicle-grid">
+                      {cards.map((c) => (
+                        <CatalogVehicleCard key={c.id} vehicle={c} />
+                      ))}
+                    </ul>
+                  </div>
+                ))
               )}
             </div>
           </div>

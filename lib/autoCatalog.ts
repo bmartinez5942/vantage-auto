@@ -182,3 +182,42 @@ export function cardsForGroup(group: CatalogGroup): AutoVehicleCard[] {
     .filter((c) => c.status !== 'hidden' && group.categories.includes(c.category))
     .sort((a, b) => a.priorityOrder - b.priorityOrder);
 }
+
+// Filter vocabularies — derived from the catalog's structured metadata, so the
+// filter UI can never offer (or guess) anything outside the controlled list.
+export const CATEGORY_OPTIONS: { value: AutoVehicleCard['category']; label: string }[] = [
+  { value: 'luxury', label: 'Luxury' },
+  { value: 'exotic', label: 'Exotic' },
+  { value: 'premium_daily', label: 'Premium Daily' },
+  { value: 'economy', label: 'Economy' },
+  { value: 'family', label: 'Family' },
+];
+
+export const BODY_STYLE_OPTIONS: { value: AutoVehicleCard['bodyStyle']; label: string }[] = [
+  { value: 'sedan', label: 'Sedan' },
+  { value: 'suv', label: 'SUV' },
+  { value: 'coupe', label: 'Coupe' },
+  { value: 'minivan', label: 'Minivan' },
+];
+
+export type CatalogFilter = { cat?: string; body?: string };
+
+function matches(c: AutoVehicleCard, f: CatalogFilter): boolean {
+  if (c.status === 'hidden') return false;
+  if (f.cat && c.category !== f.cat) return false;
+  if (f.body && c.bodyStyle !== f.body) return false;
+  return true;
+}
+
+/** Display groups with their cards narrowed by the active filter; empty groups omitted. */
+export function groupedCatalog(f: CatalogFilter = {}): { group: CatalogGroup; cards: AutoVehicleCard[] }[] {
+  return AUTO_CARD_GROUPS.map((group) => ({
+    group,
+    cards: cardsForGroup(group).filter((c) => matches(c, f)),
+  })).filter((g) => g.cards.length > 0);
+}
+
+/** Total visible cards for a filter (for the result count). */
+export function countCatalog(f: CatalogFilter = {}): number {
+  return featuredAutoCards.filter((c) => matches(c, f)).length;
+}

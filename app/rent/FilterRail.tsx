@@ -2,21 +2,7 @@
 
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useCallback } from 'react';
-import { AUTO } from '@/lib/branding';
-
-const TRANSMISSIONS = ['Automatic', 'Manual'];
-const SEATS = [
-  { label: '2+', value: '2' },
-  { label: '4+', value: '4' },
-  { label: '5+', value: '5' },
-  { label: '7+', value: '7' },
-];
-const PRICE_CAPS = [
-  { label: '≤ $100', value: '100' },
-  { label: '≤ $200', value: '200' },
-  { label: '≤ $350', value: '350' },
-  { label: '≤ $600', value: '600' },
-];
+import { CATEGORY_OPTIONS, BODY_STYLE_OPTIONS } from '@/lib/autoCatalog';
 
 export function FilterRail() {
   const router = useRouter();
@@ -36,87 +22,39 @@ export function FilterRail() {
   );
 
   const clearAll = () => router.push(pathname, { scroll: false });
-
-  const hasFilters = ['type', 'transmission', 'seats', 'maxDaily', 'delivery'].some((k) =>
-    params.has(k),
-  );
+  const hasFilters = ['cat', 'body'].some((k) => params.has(k));
 
   return (
     <aside className="filter-panel">
       <div className="filter-group">
-        <h5>Vehicle Type</h5>
+        <h5>Category</h5>
         <div className="filter-chip-row">
-          {AUTO.categories.map((c) => (
+          {CATEGORY_OPTIONS.map((c) => (
             <button
-              key={c}
+              key={c.value}
               type="button"
-              className={`filter-chip ${current('type') === c ? 'active' : ''}`}
-              onClick={() => toggle('type', c)}
+              className={`filter-chip ${current('cat') === c.value ? 'active' : ''}`}
+              onClick={() => toggle('cat', c.value)}
             >
-              {c}
+              {c.label}
             </button>
           ))}
         </div>
       </div>
 
       <div className="filter-group">
-        <h5>Transmission</h5>
+        <h5>Body Style</h5>
         <div className="filter-chip-row">
-          {TRANSMISSIONS.map((t) => (
+          {BODY_STYLE_OPTIONS.map((b) => (
             <button
-              key={t}
+              key={b.value}
               type="button"
-              className={`filter-chip ${current('transmission') === t ? 'active' : ''}`}
-              onClick={() => toggle('transmission', t)}
+              className={`filter-chip ${current('body') === b.value ? 'active' : ''}`}
+              onClick={() => toggle('body', b.value)}
             >
-              {t}
+              {b.label}
             </button>
           ))}
-        </div>
-      </div>
-
-      <div className="filter-group">
-        <h5>Seats</h5>
-        <div className="filter-chip-row">
-          {SEATS.map((s) => (
-            <button
-              key={s.value}
-              type="button"
-              className={`filter-chip ${current('seats') === s.value ? 'active' : ''}`}
-              onClick={() => toggle('seats', s.value)}
-            >
-              {s.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="filter-group">
-        <h5>Price / Day</h5>
-        <div className="filter-chip-row">
-          {PRICE_CAPS.map((p) => (
-            <button
-              key={p.value}
-              type="button"
-              className={`filter-chip ${current('maxDaily') === p.value ? 'active' : ''}`}
-              onClick={() => toggle('maxDaily', p.value)}
-            >
-              {p.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="filter-group">
-        <h5>Delivery</h5>
-        <div className="filter-chip-row">
-          <button
-            type="button"
-            className={`filter-chip ${current('delivery') === '1' ? 'active' : ''}`}
-            onClick={() => toggle('delivery', '1')}
-          >
-            Delivery available
-          </button>
         </div>
       </div>
 

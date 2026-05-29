@@ -17,13 +17,19 @@ const CATEGORY_LABEL: Record<AutoVehicleCard['category'], string> = {
  * successfully AND the card is `active`; otherwise a clean "Image coming soon"
  * placeholder is shown. We never substitute a different vehicle's photo.
  */
-export function CatalogVehicleCard({ vehicle }: { vehicle: AutoVehicleCard }) {
+export function CatalogVehicleCard({
+  vehicle,
+  href = '/contact',
+}: {
+  vehicle: AutoVehicleCard;
+  href?: string;
+}) {
   const [failed, setFailed] = useState(false);
   const showImage = vehicle.status === 'active' && Boolean(vehicle.imageUrl) && !failed;
 
   return (
     <li>
-      <Link href="/rent" className="vehicle-card" aria-label={`Request to book ${vehicle.displayName}`}>
+      <Link href={href} className="vehicle-card" aria-label={`Request to book ${vehicle.displayName}`}>
         <div className="vehicle-photo">
           {/* Placeholder is always the base layer, so a missing/404 image never
               flashes a broken icon or a wrong vehicle — the verified photo (once

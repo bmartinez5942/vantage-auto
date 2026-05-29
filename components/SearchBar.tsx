@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { IconArrow } from './icons';
 import { AUTO } from '@/lib/branding';
+import { CATEGORY_OPTIONS } from '@/lib/autoCatalog';
 
 function isoOffset(days: number) {
   const d = new Date();
@@ -11,12 +12,12 @@ function isoOffset(days: number) {
   return d.toISOString().slice(0, 10);
 }
 
-export function SearchBar({ defaults }: { defaults?: { pickup?: string; ret?: string; location?: string; type?: string } }) {
+export function SearchBar({ defaults }: { defaults?: { pickup?: string; ret?: string; location?: string; cat?: string } }) {
   const router = useRouter();
   const [pickup, setPickup] = useState(defaults?.pickup ?? isoOffset(0));
   const [ret, setRet] = useState(defaults?.ret ?? isoOffset(1));
   const [location, setLocation] = useState(defaults?.location ?? 'Miami, FL');
-  const [type, setType] = useState(defaults?.type ?? '');
+  const [cat, setCat] = useState(defaults?.cat ?? '');
 
   function search(e: React.FormEvent) {
     e.preventDefault();
@@ -24,7 +25,7 @@ export function SearchBar({ defaults }: { defaults?: { pickup?: string; ret?: st
     if (pickup) params.set('pickup', pickup);
     if (ret) params.set('return', ret);
     if (location) params.set('location', location);
-    if (type) params.set('type', type);
+    if (cat) params.set('cat', cat);
     router.push(`/rent?${params.toString()}`);
   }
 
@@ -48,10 +49,10 @@ export function SearchBar({ defaults }: { defaults?: { pickup?: string; ret?: st
       </div>
       <div className="search-field">
         <label htmlFor="sb-type">Vehicle Type</label>
-        <select id="sb-type" value={type} onChange={(e) => setType(e.target.value)}>
+        <select id="sb-type" value={cat} onChange={(e) => setCat(e.target.value)}>
           <option value="">All Types</option>
-          {AUTO.categories.map((c) => (
-            <option key={c} value={c}>{c}</option>
+          {CATEGORY_OPTIONS.map((c) => (
+            <option key={c.value} value={c.value}>{c.label}</option>
           ))}
         </select>
       </div>
