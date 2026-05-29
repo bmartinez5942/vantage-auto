@@ -15,21 +15,21 @@ const SERVICES = [
   {
     icon: <IconCar />,
     title: 'Rent a Vehicle',
-    body: 'Browse vehicles for every type of trip — daily drivers, SUVs, premium, and specialty — and book directly.',
+    body: 'Browse available vehicles, select your dates, and request your booking directly.',
     href: '/rent',
     img: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1200&q=80',
   },
   {
     icon: <IconKey />,
     title: 'Host Your Vehicle',
-    body: 'Turn your vehicle into income with our seamless hosting platform.',
+    body: 'Submit your vehicle for review and turn it into a managed income opportunity.',
     href: '/host',
     img: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1200&q=80',
   },
   {
     icon: <IconSearch />,
     title: 'Source a Vehicle',
-    body: 'We find and acquire the right vehicle, tailored to your needs.',
+    body: 'Looking for a specific vehicle? Our team can help source, inspect, and negotiate.',
     href: '/source',
     img: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80',
   },
@@ -127,24 +127,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* WHY */}
-      <section className="section">
-        <div className="container">
-          <div className="section-head center">
-            <h2 className="section-title">Why <em>Vantage Auto</em></h2>
-          </div>
-          <div className="why-grid">
-            {WHY.map((w) => (
-              <div key={w.title} className="why-item">
-                <div className="why-icon">{w.icon}</div>
-                <h4>{w.title}</h4>
-                <p>{w.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ADD A VEHICLE TO YOUR STAY */}
       <section className="section-tight">
         <div className="container">
@@ -183,6 +165,24 @@ export default async function HomePage() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* WHY */}
+      <section className="section">
+        <div className="container">
+          <div className="section-head center">
+            <h2 className="section-title">Why <em>Vantage Auto</em></h2>
+          </div>
+          <div className="why-grid">
+            {WHY.map((w) => (
+              <div key={w.title} className="why-item">
+                <div className="why-icon">{w.icon}</div>
+                <h4>{w.title}</h4>
+                <p>{w.body}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { AUTO } from '@/lib/branding';
-import { IconInstagram, IconLinkedIn, IconYouTube } from '@/components/icons';
+import { IconInstagram, IconLinkedIn, IconMail } from '@/components/icons';
 
 export function Footer() {
   return (
@@ -14,14 +14,20 @@ export function Footer() {
               <span className="brand-suffix">Auto</span>
             </div>
             <p className="footer-blurb">
-              Premium vehicle rentals, hosting, and sourcing — part of the Auren ecosystem alongside
-              Vantage Stays.
+              Vehicle rentals, hosting, and sourcing — connected to the Auren ecosystem.
             </p>
             <div className="footer-social" aria-label="Follow Vantage Auto">
               <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram"><IconInstagram /></a>
               <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn"><IconLinkedIn /></a>
-              <a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube"><IconYouTube /></a>
+              <a href={`mailto:${AUTO.email}`} aria-label="Email"><IconMail /></a>
             </div>
+          </div>
+
+          <div className="footer-col">
+            <h6>Company</h6>
+            <Link href="/about">About Us</Link>
+            <Link href="/rent">Our Fleet</Link>
+            <Link href="/contact">Contact</Link>
           </div>
 
           <div className="footer-col">
@@ -32,34 +38,17 @@ export function Footer() {
           </div>
 
           <div className="footer-col">
-            <h6>Company</h6>
-            <Link href="/about">About</Link>
-            <Link href="/contact">Contact</Link>
-            <a href="https://vantagestays.miami" target="_blank" rel="noreferrer">Vantage Stays</a>
-          </div>
-
-          <div className="footer-col">
-            <h6>Support</h6>
-            <Link href="/contact">Help &amp; Contact</Link>
-            <Link href="/rent">Browse Vehicles</Link>
-            <Link href="/host">List Your Vehicle</Link>
-            <a href={`mailto:${AUTO.email}`}>{AUTO.email}</a>
-          </div>
-        </div>
-
-        <div className="footer-sub-band">
-          <div className="footer-sub-copy">
             <h6>Stay in the know</h6>
-            <p className="footer-blurb" style={{ marginTop: 0 }}>
-              Be the first to see new vehicles and seasonal offers.
+            <p className="footer-blurb" style={{ marginTop: 0, marginBottom: 12 }}>
+              Subscribe for updates and exclusive offers.
             </p>
+            <form className="footer-sub-input" action={`mailto:${AUTO.email}`} method="get">
+              <input type="email" name="email" placeholder="Enter your email" aria-label="Email" />
+              <button type="submit" className="btn-primary btn-sm" aria-label="Subscribe">
+                →
+              </button>
+            </form>
           </div>
-          <form className="footer-sub-input" action={`mailto:${AUTO.email}`} method="get">
-            <input type="email" name="email" placeholder="Enter your email" aria-label="Email" />
-            <button type="submit" className="btn-primary btn-sm" aria-label="Subscribe">
-              →
-            </button>
-          </form>
         </div>
 
         <div className="footer-bottom">

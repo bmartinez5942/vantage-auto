@@ -64,3 +64,6 @@ export const IconLinkedIn = (p: P) => (
 export const IconYouTube = (p: P) => (
   <svg {...base} {...p}><rect x="3" y="6" width="18" height="12" rx="3" /><path d="m11 9.5 4 2.5-4 2.5z" /></svg>
 );
+export const IconMail = (p: P) => (
+  <svg {...base} {...p}><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></svg>
+);
