@@ -15,7 +15,7 @@ const SERVICES = [
   {
     icon: <IconCar />,
     title: 'Rent a Vehicle',
-    body: 'Browse our curated collection of premium vehicles and book directly.',
+    body: 'Browse vehicles for every type of trip — daily drivers, SUVs, premium, and specialty — and book directly.',
     href: '/rent',
     img: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1200&q=80',
   },
@@ -36,10 +36,10 @@ const SERVICES = [
 ];
 
 const WHY = [
-  { icon: <IconShield />, title: 'Professionally Managed', body: 'Every vehicle is vetted, insured, and maintained to the highest standards.' },
+  { icon: <IconShield />, title: 'Professionally Managed', body: 'Every vehicle is reviewed, documented, and managed according to our platform standards.' },
   { icon: <IconCalendar />, title: 'Calendar-Based Booking', body: 'Real-time availability and seamless booking that fits your schedule.' },
   { icon: <IconStar />, title: 'Guest-Focused Experience', body: 'Designed to elevate every stay with comfort, convenience, and choice.' },
-  { icon: <IconKey />, title: 'Integrated with Auren', body: 'Seamlessly connected to the Auren ecosystem for a unified luxury experience.' },
+  { icon: <IconKey />, title: 'Integrated with Auren', body: 'Seamlessly connected to the Auren ecosystem for a unified, end-to-end experience.' },
 ];
 
 export default async function HomePage() {

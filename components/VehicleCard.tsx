@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { VehicleImage } from './VehicleImage';
-import { IconSeats, IconGear, IconFuel, IconHeart } from './icons';
+import { IconSeats, IconGear, IconFuel, IconHeart, IconRoad } from './icons';
 import { vehicleName, vehicleHref, type Vehicle } from '@/lib/vehicles';
 import { formatCurrency } from '@/lib/format';
 
@@ -26,6 +26,13 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
             )}
             {vehicle.fuel_type && (
               <span className="vehicle-meta-item"><IconFuel /> {vehicle.fuel_type}</span>
+            )}
+            {vehicle.unlimited_mileage ? (
+              <span className="vehicle-meta-item"><IconRoad /> Unlimited miles</span>
+            ) : (
+              vehicle.included_miles_per_day != null && vehicle.included_miles_per_day > 0 && (
+                <span className="vehicle-meta-item"><IconRoad /> {vehicle.included_miles_per_day} mi/day</span>
+              )
             )}
           </div>
           <div className="vehicle-price-row">

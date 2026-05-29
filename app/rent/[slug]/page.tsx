@@ -3,11 +3,26 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Gallery } from './Gallery';
 import { BookingForm } from './BookingForm';
-import { fetchVehicleBySlug, vehicleName } from '@/lib/vehicles';
-import { formatCurrency, formatNumber } from '@/lib/format';
-import { IconCheck, IconSeats, IconGear, IconFuel, IconArrow } from '@/components/icons';
+import { fetchVehicleBySlug, fetchUnavailableRanges, vehicleName } from '@/lib/vehicles';
+import { formatCurrency, formatNumber, formatDate } from '@/lib/format';
+import { IconCheck, IconSeats, IconGear, IconFuel, IconArrow, IconCalendar } from '@/components/icons';
 
 export const revalidate = 120;
+
+/** True when the vehicle runs on electric power (affects fuel vs. charge copy). */
+function isElectric(fuelType: string | null): boolean {
+  if (!fuelType) return false;
+  return /electric|\bev\b/i.test(fuelType);
+}
+
+/** Sanitize owner/DB-supplied feature labels so we never overstate vehicle
+ *  capabilities (e.g. autonomous driving) in public marketing copy. */
+function sanitizeFeature(feature: string): string {
+  return feature
+    .replace(/full self[- ]driving( assist)?/gi, 'Driver assistance features')
+    .replace(/self[- ]driving/gi, 'Driver assistance features')
+    .replace(/autopilot|autonomous driving/gi, 'Driver assistance features');
+}
 
 export async function generateMetadata({
   params,
@@ -44,7 +59,12 @@ export default async function VehicleDetailPage({
 
   const name = vehicleName(vehicle);
   const photos = (vehicle.photos ?? []).filter(Boolean);
-  const features = (vehicle.features ?? []).filter(Boolean);
+  const features = (vehicle.features ?? []).filter(Boolean).map(sanitizeFeature);
+  const electric = isElectric(vehicle.fuel_type);
+
+  // Public-safe availability: unavailable date ranges only — never the reason
+  // a date is blocked (booking vs. maintenance vs. external channel).
+  const unavailable = await fetchUnavailableRanges(vehicle.id);
 
   const specs: { label: string; value: string }[] = [];
   if (vehicle.category) specs.push({ label: 'Type', value: vehicle.category });
@@ -122,18 +142,43 @@ export default async function VehicleDetailPage({
               <div className="form-section-label">Good to know</div>
               <ul className="feature-list">
                 <li>
-                  <IconSeats /> Professionally managed & insured
+                  <IconSeats /> Reviewed, documented, and managed to our platform standards
                 </li>
                 <li>
                   <IconGear /> Flexible pick-up and return
                 </li>
                 <li>
-                  <IconFuel /> Return with the same fuel level
+                  <IconFuel /> {electric ? 'Return with the same charge level' : 'Return with the same fuel level'}
                 </li>
                 <li>
                   <IconCheck /> 24/7 support during your rental
                 </li>
               </ul>
+
+              <div className="form-section-label">Availability</div>
+              {unavailable.length === 0 ? (
+                <ul className="feature-list">
+                  <li>
+                    <IconCalendar /> No blocked dates right now — request your dates and we’ll confirm.
+                  </li>
+                </ul>
+              ) : (
+                <>
+                  <p className="muted" style={{ fontSize: 14, marginBottom: 10 }}>
+                    These dates are currently unavailable. All other dates are open to request.
+                  </p>
+                  <ul className="feature-list">
+                    {unavailable.map((r) => (
+                      <li key={`${r.start}-${r.end}`}>
+                        <IconCalendar />{' '}
+                        {r.start === r.end
+                          ? formatDate(r.start)
+                          : `${formatDate(r.start)} – ${formatDate(r.end)}`}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </div>
 
             <BookingForm

@@ -6,18 +6,13 @@ import { useEffect, useState } from 'react';
 import { ThemeToggle } from './ThemeToggle';
 import { AUTO, NAV_LINKS } from '@/lib/branding';
 
+// Single, consistent wordmark: the gold "V" monogram followed by the
+// clean "VANTAGE AUTO" wordmark. No dotted letters, no duplicate V.
 function Wordmark() {
   return (
     <>
       <span className="brand-mark">V</span>
-      <span>
-        {AUTO.wordmark.map((ch, i) => (
-          <span key={i}>
-            {ch}
-            {i < AUTO.wordmark.length - 1 && <span className="brand-ornament">·</span>}
-          </span>
-        ))}
-      </span>
+      <span className="brand-name">Vantage</span>
       <span className="brand-suffix">Auto</span>
     </>
   );
@@ -99,8 +94,6 @@ export function Header() {
               {l.label}
             </Link>
           ))}
-          <Link href="/about">About</Link>
-          <Link href="/contact">Contact</Link>
         </nav>
         <div className="mobile-drawer-foot">
           <a href={`mailto:${AUTO.email}`}>{AUTO.email}</a>

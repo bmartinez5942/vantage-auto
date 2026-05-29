@@ -43,7 +43,8 @@ export default async function RentPage({
           The <em>Collection</em>
         </h1>
         <p className="section-sub">
-          Practical daily drivers to premium vehicles — every car professionally managed, insured, and ready for your stay.
+          Practical daily drivers, SUVs, premium vehicles, and specialty options — vehicles for every type of
+          trip, reviewed and managed to our platform standards.
         </p>
       </div>
 

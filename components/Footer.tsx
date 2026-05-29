@@ -10,7 +10,7 @@ export function Footer() {
           <div className="footer-brand">
             <div className="brand-wordmark">
               <span className="brand-mark">V</span>
-              <span>VANTAGE</span>
+              <span className="brand-name">Vantage</span>
               <span className="brand-suffix">Auto</span>
             </div>
             <p className="footer-blurb">

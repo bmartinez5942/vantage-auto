@@ -4,12 +4,12 @@ import { IconCheck, IconShield, IconCalendar, IconStar } from '@/components/icon
 
 export const metadata: Metadata = {
   title: 'Host Your Vehicle — Vantage Auto',
-  description: 'Turn your vehicle into income. Vantage Auto professionally manages, insures, and books your car.',
+  description: 'Turn your vehicle into income. Vantage Auto handles listing, screening, and bookings — submit your vehicle for review.',
 };
 
 const STEPS = [
   { n: '1', icon: <IconStar />, title: 'Submit', body: 'Tell us about your vehicle and the terms you have in mind.' },
-  { n: '2', icon: <IconShield />, title: 'Review', body: 'We personally vet condition, documents, and insurance.' },
+  { n: '2', icon: <IconShield />, title: 'Review', body: 'We review condition, documents, and eligibility together.' },
   { n: '3', icon: <IconCalendar />, title: 'Onboard', body: 'We finalize pricing, photos, and your availability with you.' },
   { n: '4', icon: <IconCheck />, title: 'Earn', body: 'Your vehicle goes live and you earn on every confirmed booking.' },
 ];
@@ -23,8 +23,8 @@ export default function HostPage() {
           Turn Your Vehicle<br />Into <em>Income.</em>
         </h1>
         <p className="section-sub">
-          We handle the listing, screening, insurance coordination, and bookings. You keep the majority of every
-          rental. Default split is 80% to you, 20% to Vantage Auto — finalized together during onboarding.
+          Submit your vehicle for review and our team will walk you through eligibility, management terms, and
+          expected earnings during onboarding.
         </p>
       </div>
 

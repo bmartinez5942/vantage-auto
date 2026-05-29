@@ -76,6 +76,57 @@ export function HostForm() {
         </div>
       </div>
 
+      <div className="form-section-label">Documentation & condition</div>
+      <p className="form-finep" style={{ marginTop: 0, marginBottom: 14 }}>
+        This helps us confirm eligibility. Our team verifies all documents during onboarding — you can
+        share copies and full photo sets then.
+      </p>
+      <div className="form-row">
+        <div className="form-field">
+          <label htmlFor="hf-vin">VIN</label>
+          <input id="hf-vin" name="vin" type="text" placeholder="17-character VIN" maxLength={17} />
+        </div>
+        <div className="form-field">
+          <label htmlFor="hf-title">Title status</label>
+          <select id="hf-title" name="titleStatus" defaultValue="">
+            <option value="" disabled>Select…</option>
+            <option value="clean">Clean</option>
+            <option value="rebuilt">Rebuilt / reconstructed</option>
+            <option value="salvage">Salvage</option>
+            <option value="lien">Lien / financed</option>
+          </select>
+        </div>
+      </div>
+      <div className="form-row">
+        <div className="form-field">
+          <label htmlFor="hf-insurance">Insurance status</label>
+          <select id="hf-insurance" name="insuranceStatus" defaultValue="">
+            <option value="" disabled>Select…</option>
+            <option value="active-personal">Active — personal policy</option>
+            <option value="active-commercial">Active — commercial / rental policy</option>
+            <option value="none">Not currently insured</option>
+            <option value="unsure">Not sure</option>
+          </select>
+        </div>
+        <div className="form-field">
+          <label htmlFor="hf-registration">Registration status</label>
+          <select id="hf-registration" name="registrationStatus" defaultValue="">
+            <option value="" disabled>Select…</option>
+            <option value="current">Current</option>
+            <option value="expiring-soon">Expiring soon</option>
+            <option value="expired">Expired</option>
+          </select>
+        </div>
+      </div>
+      <div className="form-field">
+        <label htmlFor="hf-accident">Accident / damage history</label>
+        <textarea id="hf-accident" name="accidentHistory" rows={3} placeholder="Any accidents, prior damage, or open mechanical issues? Enter 'None' if clean." />
+      </div>
+      <div className="form-field">
+        <label htmlFor="hf-photos">Photo links (optional)</label>
+        <input id="hf-photos" name="photoLinks" type="text" placeholder="Paste a link to a photo album, or leave blank — we'll request photos during onboarding." />
+      </div>
+
       <div className="form-section-label">Requested settings</div>
       <p className="form-finep" style={{ marginTop: 0, marginBottom: 14 }}>
         These are requests only. Our team reviews every vehicle and confirms final pricing with you —

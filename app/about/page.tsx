@@ -5,11 +5,11 @@ import { AUTO } from '@/lib/branding';
 
 export const metadata: Metadata = {
   title: 'About — Vantage Auto',
-  description: 'Vantage Auto is the mobility division of the Auren ecosystem — premium vehicle rentals, hosting, and sourcing.',
+  description: 'Vantage Auto is part of the Auren ecosystem — vehicle rentals, hosting, and sourcing for every type of trip.',
 };
 
 const VALUES = [
-  { icon: <IconShield />, title: 'Professionally Managed', body: 'Every vehicle is vetted, insured, and maintained to a consistent standard.' },
+  { icon: <IconShield />, title: 'Professionally Managed', body: 'Every vehicle is reviewed, documented, and managed according to our platform standards.' },
   { icon: <IconStar />, title: 'Guest-Focused', body: 'A booking experience built to feel effortless from search to return.' },
   { icon: <IconCalendar />, title: 'Transparent', body: 'Clear pricing, clear mileage, clear terms — no surprises at pickup.' },
   { icon: <IconKey />, title: 'Part of Auren', body: 'Connected to Vantage Stays and the wider Auren ecosystem for a unified experience.' },

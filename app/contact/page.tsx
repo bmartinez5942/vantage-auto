@@ -31,11 +31,6 @@ export default function ContactPage() {
               <p><a href={`mailto:${AUTO.email}`} style={{ color: 'var(--gold)' }}>{AUTO.email}</a></p>
             </div>
             <div className="why-item">
-              <div className="why-icon"><IconCar /></div>
-              <h4>Phone</h4>
-              <p><a href={`tel:${AUTO.phone.replace(/[^0-9]/g, '')}`} style={{ color: 'var(--gold)' }}>{AUTO.phone}</a></p>
-            </div>
-            <div className="why-item">
               <div className="why-icon"><IconPin /></div>
               <h4>Service Area</h4>
               <p>{AUTO.cities.join(' · ')}</p>

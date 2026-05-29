@@ -158,6 +158,32 @@ export async function submitHostListing(
   }
   const d = parsed.data;
 
+  // Documentation/condition fields don't have dedicated columns yet, so we
+  // capture them into a structured block prepended to the notes field. This
+  // keeps the data visible to admins without requiring a schema migration.
+  const str = (k: string) => (formData.get(k) as string)?.trim() || '';
+  const docLines: string[] = [];
+  const vin = str('vin');
+  const titleStatus = str('titleStatus');
+  const insuranceStatus = str('insuranceStatus');
+  const registrationStatus = str('registrationStatus');
+  const accidentHistory = str('accidentHistory');
+  const photoLinks = str('photoLinks');
+  if (vin) docLines.push(`VIN: ${vin}`);
+  if (titleStatus) docLines.push(`Title status: ${titleStatus}`);
+  if (insuranceStatus) docLines.push(`Insurance status: ${insuranceStatus}`);
+  if (registrationStatus) docLines.push(`Registration status: ${registrationStatus}`);
+  if (accidentHistory) docLines.push(`Accident/damage history: ${accidentHistory}`);
+  if (photoLinks) docLines.push(`Photo links: ${photoLinks}`);
+  const ownerNotes = str('notes');
+  const combinedNotes =
+    [
+      docLines.length ? `--- Documentation & condition ---\n${docLines.join('\n')}` : '',
+      ownerNotes ? `--- Owner notes ---\n${ownerNotes}` : '',
+    ]
+      .filter(Boolean)
+      .join('\n\n') || null;
+
   const sb = serverClient();
   const { error } = await sb.from('vehicle_host_submissions').insert({
     owner_name: d.ownerName,
@@ -171,7 +197,7 @@ export async function submitHostListing(
     mileage: int(formData.get('mileage')),
     availability_pref: (formData.get('availability') as string)?.trim() || null,
     delivery_pref: (formData.get('deliveryPref') as string)?.trim() || null,
-    notes: (formData.get('notes') as string)?.trim() || null,
+    notes: combinedNotes,
     requested_daily_rate: num(formData.get('reqDaily')),
     requested_weekly_rate: num(formData.get('reqWeekly')),
     requested_monthly_rate: num(formData.get('reqMonthly')),

@@ -113,7 +113,7 @@ export function BookingForm({
           </div>
           {quote.cleaningFee > 0 && (
             <div className="price-line">
-              <span>Cleaning fee</span>
+              <span>Vehicle preparation fee</span>
               <span>{formatCurrency(quote.cleaningFee)}</span>
             </div>
           )}
@@ -131,8 +131,14 @@ export function BookingForm({
                 : `${formatNumber(quote.includedMiles)} mi`}
             </span>
           </div>
+          {!vehicle.unlimited_mileage && vehicle.extra_mileage_fee != null && vehicle.extra_mileage_fee > 0 && (
+            <div className="price-line">
+              <span>Extra mileage</span>
+              <span>{formatCurrency(vehicle.extra_mileage_fee)} / mi</span>
+            </div>
+          )}
           <div className="price-line total">
-            <span>Due at booking request</span>
+            <span>Booking request total</span>
             <span>{formatCurrency(quote.dueNow)}</span>
           </div>
           {quote.deposit > 0 && (
@@ -170,8 +176,8 @@ export function BookingForm({
 
         <SubmitButton />
         <p className="form-finep">
-          <IconCheck /> No charge is made now. We verify license, insurance, and availability before
-          confirming. You’ll receive an email to finalize.
+          <IconCheck /> No charge is collected until the booking is reviewed and approved. We verify your
+          license, eligibility, and availability before confirming, then email you to finalize.
         </p>
       </form>
     </div>
