@@ -131,7 +131,7 @@ export default async function HomePage() {
             <p className="va-card-label">Recommended Vehicle</p>
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/auto/bmw-x5.jpg" alt="BMW X5 SUV" />
+          <img src="/images/recommended-bmw.jpg" alt="Recommended vehicle" />
           <h4>2023+ BMW X5</h4>
           <small>Premium SUV · available on request</small>
           <Link href="/contact" style={pairingCta}>Request to Book</Link>
