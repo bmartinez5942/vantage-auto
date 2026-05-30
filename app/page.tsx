@@ -15,24 +15,27 @@ const BRAND = AUTO.name;
 
 const SERVICES = [
   {
+    // SUV moving through a city — premium, not a race/desert scene
     title: 'Rent a Vehicle',
     description: 'Browse available vehicles, select your dates, and request your booking directly.',
     href: '/rent',
-    image: 'https://images.unsplash.com/photo-1549924231-f129b911e442?q=80&w=1600&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=1600&auto=format&fit=crop',
     Icon: Car,
   },
   {
+    // Vehicle key handoff / owner interaction (not a street scene)
     title: 'Host Your Vehicle',
     description: 'Submit your vehicle for review and turn it into a managed income opportunity.',
     href: '/host',
-    image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1600&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?q=80&w=1600&auto=format&fit=crop',
     Icon: UserRound,
   },
   {
+    // Luxury auto showroom / vehicle lineup
     title: 'Source a Vehicle',
     description: 'Looking for a specific vehicle? Our team can help source, inspect, and negotiate.',
     href: '/source',
-    image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1600&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1600&auto=format&fit=crop',
     Icon: Search,
   },
 ];
