@@ -546,8 +546,8 @@ html.va-dark .va-hero {
   background:
     linear-gradient(90deg, rgba(0,0,0,0.86) 0%, rgba(0,0,0,0.62) 42%, rgba(0,0,0,0.18) 100%),
     url("/images/hero.jpg") center/cover no-repeat;
-  min-height: 610px;
-  padding: 92px 64px 152px;
+  min-height: 460px;
+  padding: 70px 48px 115px;
 }
 html.va-dark .va-hero h1 { color: #f4eee0; }
 html.va-dark .va-hero p  { color: rgba(244,238,224,0.84); }
@@ -563,8 +563,8 @@ html.va-light .va-hero p  { color: rgba(31,26,18,0.74); }
 html.va-light .va-secondary-button { border-color: rgba(0,0,0,0.18); color: #111; background: rgba(255,255,255,0.68); }
 
 @media (max-width: 680px) {
-  html.va-dark  .va-hero { padding: 76px 22px 126px; }
-  html.va-light .va-hero { padding: 76px 22px 126px; }
+  html.va-dark  .va-hero { min-height: 540px; padding: 72px 20px 118px; }
+  html.va-light .va-hero { min-height: 540px; padding: 72px 20px 118px; }
 }
 
 /* ---- Search bar ------------------------------------------- */
@@ -668,3 +668,32 @@ html.va-light .va-footer h4 { color: var(--va-gold-dark, #b9874e); }
 /* ---- Mobile menu ------------------------------------------ */
 html.va-dark  .va-mobile-menu { background: rgba(14,15,16,0.98); border-color: rgba(212,170,112,0.18); }
 html.va-light .va-mobile-menu { background: rgba(255,255,255,0.98); border-color: rgba(0,0,0,0.08); }
+
+/* ============================================================
+   PROPORTION ALIGNMENT — to approved next-app/globals.css spec
+   (compact hero, tighter sections, refined type scale). Appended
+   last so these 1-class rules win over the base block above.
+   ============================================================ */
+.va-hero { min-height: 460px; padding: 70px 48px 115px; }
+.va-hero-content { max-width: 560px; }
+.va-hero h1 { font-size: clamp(54px, 6.4vw, 82px); }
+.va-hero p { font-size: 15px; max-width: 455px; margin: 20px 0 26px; }
+.va-header { height: 64px; padding: 0 36px; }
+.va-search-wrap { margin-top: -48px; padding: 0 38px; }
+.va-search-panel { padding: 22px 24px; gap: 16px; border-radius: 18px; grid-template-columns: repeat(4, 1fr) 190px; box-shadow: 0 22px 60px rgba(0,0,0,0.36); }
+.va-search-button { min-width: auto; }
+.va-section { padding: 42px 38px; }
+.va-service-grid { gap: 22px; padding-top: 36px; }
+.va-service-image { height: 152px; }
+.va-service-body { min-height: 210px; padding: 27px 28px 24px; }
+.va-service-body h3 { font-size: 31px; margin: 18px 0 8px; }
+.va-section-header h2 { font-size: 36px; }
+.va-vehicle-grid { gap: 20px; }
+.va-vehicle-image { height: 150px; }
+.va-why-section h2 { font-size: 36px; }
+.va-footer { padding: 42px 38px; }
+@media (max-width: 680px) {
+  .va-hero { min-height: 540px; padding: 72px 20px 118px; }
+  .va-hero h1 { font-size: 57px; }
+  .va-search-wrap, .va-section { padding-left: 20px; padding-right: 20px; }
+}
