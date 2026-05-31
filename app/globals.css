@@ -784,3 +784,14 @@ img, video { max-width: 100%; height: auto; }
 .faq-item summary::after { content: '+'; color: var(--gold); font-size: 20px; line-height: 1; }
 .faq-item[open] summary::after { content: '–'; }
 .faq-item p { padding: 0 20px 18px; color: var(--text-dim); font-size: 14.5px; line-height: 1.65; margin: 0; }
+
+/* ============================ HOME · HOW IT WORKS BAND ============================ */
+.va-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+.va-step { padding: 24px; border-radius: var(--va-radius-xl); background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.09); }
+html.va-light .va-step { background: #fff; border-color: rgba(0,0,0,.07); box-shadow: 0 12px 40px rgba(0,0,0,.05); }
+.va-step-n { font-family: var(--va-serif); font-size: 30px; color: var(--va-gold); line-height: 1; }
+.va-step h4 { margin: 12px 0 6px; font-size: 16px; }
+.va-step p { margin: 0; font-size: 14px; line-height: 1.55; color: rgba(255,255,255,.68); }
+html.va-light .va-step p { color: rgba(0,0,0,.62); }
+@media (max-width: 1024px) { .va-steps { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px)  { .va-steps { grid-template-columns: 1fr; } }

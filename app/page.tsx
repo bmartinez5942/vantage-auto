@@ -79,19 +79,26 @@ export default async function HomePage() {
       {/* SEARCH */}
       <SearchBar />
 
-      {/* SERVICES */}
-      <section className="va-section va-service-grid">
-        {SERVICES.map(({ title, description, href, image, Icon }) => (
-          <Link href={href} className="va-service-card" key={title}>
-            <div className="va-service-image" style={{ backgroundImage: `url(${image})` }} />
-            <div className="va-service-body">
-              <div className="va-icon-badge"><Icon size={22} /></div>
-              <h3>{title}</h3>
-              <p>{description}</p>
-              <span>Learn More →</span>
+      {/* HOW IT WORKS */}
+      <section className="va-section">
+        <div className="va-section-header">
+          <h2>How It Works</h2>
+          <Link href="/how-it-works">Learn more →</Link>
+        </div>
+        <div className="va-steps">
+          {([
+            ['01', 'Browse & Request', 'Pick a vehicle and request your dates — no charge to request.'],
+            ['02', 'We Verify', 'We confirm availability, your license, and eligibility.'],
+            ['03', 'Confirm', 'Approved by our team, with any deposit finalized by email.'],
+            ['04', 'Pick Up & Drive', 'Collect your vehicle or request delivery, and go.'],
+          ] as const).map(([n, t, d]) => (
+            <div className="va-step" key={n}>
+              <div className="va-step-n">{n}</div>
+              <h4>{t}</h4>
+              <p>{d}</p>
             </div>
-          </Link>
-        ))}
+          ))}
+        </div>
       </section>
 
       {/* FEATURED */}
@@ -107,6 +114,21 @@ export default async function HomePage() {
                 <CatalogVehicleCard key={v.id} vehicle={v} dailyRate={pricing[v.id]?.dailyRate ?? null} />
               ))}
         </div>
+      </section>
+
+      {/* SERVICES */}
+      <section className="va-section va-service-grid">
+        {SERVICES.map(({ title, description, href, image, Icon }) => (
+          <Link href={href} className="va-service-card" key={title}>
+            <div className="va-service-image" style={{ backgroundImage: `url(${image})` }} />
+            <div className="va-service-body">
+              <div className="va-icon-badge"><Icon size={22} /></div>
+              <h3>{title}</h3>
+              <p>{description}</p>
+              <span>Learn More →</span>
+            </div>
+          </Link>
+        ))}
       </section>
 
       {/* ADD A VEHICLE TO YOUR STAY */}

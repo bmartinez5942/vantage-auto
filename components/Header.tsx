@@ -5,11 +5,17 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
-import { AUTO, NAV_LINKS } from '@/lib/branding';
+import { AUTO } from '@/lib/branding';
 
-// Desktop nav stays to the three primary actions (matches the approved render);
-// About/Contact live in the footer and the mobile menu.
-const DESKTOP_NAV = NAV_LINKS.slice(0, 3);
+const DESKTOP_NAV = [
+  { href: '/rent', label: 'Rent' },
+  { href: '/how-it-works', label: 'How It Works' },
+  { href: '/host', label: 'Host Your Vehicle' },
+  { href: '/source', label: 'Source a Vehicle' },
+  { href: '/about', label: 'About' },
+];
+// Mobile gets the full set plus FAQ/Contact.
+const MOBILE_NAV = [...DESKTOP_NAV, { href: '/faq', label: 'FAQ' }, { href: '/contact', label: 'Contact' }];
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -48,7 +54,7 @@ export function Header() {
 
       {open && (
         <div className="va-mobile-menu">
-          {NAV_LINKS.map((l) => (
+          {MOBILE_NAV.map((l) => (
             <Link key={l.href} href={l.href} onClick={() => setOpen(false)}>{l.label}</Link>
           ))}
           <Link href="/rent" onClick={() => setOpen(false)}>Book Now</Link>

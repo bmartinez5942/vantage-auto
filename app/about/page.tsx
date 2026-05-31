@@ -45,8 +45,23 @@ export default function AboutPage() {
       </section>
 
       <section className="section-tight">
-        <div className="container" style={{ textAlign: 'center' }}>
-          <Link href="/rent" className="btn-primary">Browse the Collection</Link>
+        <div className="container" style={{ maxWidth: 760 }}>
+          <h2 className="section-title">Part of the <em>Auren ecosystem.</em></h2>
+          <p className="section-sub" style={{ marginTop: 12 }}>
+            Auren is the operating company behind a connected set of guest brands: <strong>Vantage Stays</strong> for
+            places to stay, <strong>Clearpoint</strong> for turnover and cleaning, and {AUTO.name} for getting
+            around. A vehicle can sit right alongside your Vantage Stays reservation — one platform, one standard
+            of service.
+          </p>
+          <p className="section-sub" style={{ marginTop: 14 }}>
+            Every vehicle is individually reviewed and managed, and every booking is{' '}
+            <strong>request to book</strong> — confirmed by our team rather than auto-accepted — so what you
+            reserve is real and verified.
+          </p>
+          <div style={{ marginTop: 24, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            <Link href="/rent" className="btn-primary">Browse vehicles</Link>
+            <Link href="/how-it-works" className="btn-ghost">How it works</Link>
+          </div>
         </div>
       </section>
     </>

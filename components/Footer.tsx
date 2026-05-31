@@ -27,6 +27,7 @@ export function Footer() {
         <Link href="/about">About Us</Link>
         <Link href="/how-it-works">How It Works</Link>
         <Link href="/faq">FAQ</Link>
+        <Link href="/policies">Policies</Link>
         <Link href="/contact">Contact</Link>
       </div>
 
