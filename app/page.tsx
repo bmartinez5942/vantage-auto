@@ -5,8 +5,10 @@ import Link from 'next/link';
 import { Car, UserRound, Search, Calendar, Star, Plus } from 'lucide-react';
 import { SearchBar } from '@/components/SearchBar';
 import { CatalogVehicleCard } from '@/components/CatalogVehicleCard';
+import { LiveVehicleCard } from '@/components/LiveVehicleCard';
 import { featuredAutoCards } from '@/lib/autoCatalog';
 import { fetchApprovedPricing } from '@/lib/pricing';
+import { fetchLiveVehicles } from '@/lib/liveVehicles';
 import { AUTO } from '@/lib/branding';
 
 export const revalidate = 600;
@@ -56,6 +58,7 @@ const pairingCta: React.CSSProperties = {
 
 export default async function HomePage() {
   const pricing = await fetchApprovedPricing();
+  const live = await fetchLiveVehicles(4);
   return (
     <div className="va-page">
       {/* HERO */}
@@ -98,9 +101,11 @@ export default async function HomePage() {
           <Link href="/rent">View All Vehicles →</Link>
         </div>
         <div className="va-vehicle-grid">
-          {featured.map((v) => (
-            <CatalogVehicleCard key={v.id} vehicle={v} dailyRate={pricing[v.id]?.dailyRate ?? null} />
-          ))}
+          {live.length > 0
+            ? live.map((v) => <LiveVehicleCard key={v.id} vehicle={v} />)
+            : featured.map((v) => (
+                <CatalogVehicleCard key={v.id} vehicle={v} dailyRate={pricing[v.id]?.dailyRate ?? null} />
+              ))}
         </div>
       </section>
 

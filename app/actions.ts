@@ -21,6 +21,89 @@ function trapped(formData: FormData): boolean {
   return Boolean((formData.get('company') as string)?.trim());
 }
 
+// ============================ BOOKING REQUEST ============================
+// Request-to-book only. Creates a pending_verification booking — never confirms,
+// never charges. Pricing is read server-side from the approved vehicle row.
+const bookingSchema = z.object({
+  vehicleId: z.string().uuid('Missing vehicle.'),
+  pickup: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Choose a pick-up date.'),
+  ret: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Choose a return date.'),
+  name: nameRule,
+  email: emailRule,
+  phone: phoneRule,
+  notes: z.string().trim().max(2000).optional(),
+});
+
+function daysBetween(a: string, b: string): number {
+  const d = Math.round((new Date(b + 'T00:00:00').getTime() - new Date(a + 'T00:00:00').getTime()) / 86_400_000);
+  return Math.max(1, d);
+}
+
+export async function submitVehicleBooking(_prev: FormResult, formData: FormData): Promise<FormResult> {
+  if (trapped(formData)) return { ok: true, message: 'Request received.' };
+  const parsed = bookingSchema.safeParse({
+    vehicleId: formData.get('vehicleId'),
+    pickup: formData.get('pickup'),
+    ret: formData.get('ret'),
+    name: formData.get('name'),
+    email: formData.get('email'),
+    phone: formData.get('phone'),
+    notes: formData.get('notes') ?? undefined,
+  });
+  if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? 'Please check the form.' };
+  const v = parsed.data;
+  if (v.ret <= v.pickup) return { ok: false, error: 'Return date must be after pick-up.' };
+
+  const sb = serverClient();
+  // Only approved, live vehicles are bookable. Pricing comes from the row.
+  const { data: veh, error: vErr } = await sb
+    .from('vehicles')
+    .select('id, daily_rate, deposit_amount, listing_status, approved_by_admin, min_rental_days, max_rental_days')
+    .eq('id', v.vehicleId)
+    .maybeSingle();
+  if (vErr || !veh || (veh as { listing_status?: string }).listing_status !== 'live' || !(veh as { approved_by_admin?: boolean }).approved_by_admin) {
+    return { ok: false, error: 'This vehicle is not available to book.' };
+  }
+  const row = veh as { daily_rate: number | null; deposit_amount: number | null; min_rental_days: number | null; max_rental_days: number | null };
+  const days = daysBetween(v.pickup, v.ret);
+  const min = row.min_rental_days ?? 1;
+  const max = row.max_rental_days ?? null;
+  if (days < min) return { ok: false, error: `Minimum rental is ${min} day${min > 1 ? 's' : ''}.` };
+  if (max && days > max) return { ok: false, error: `Maximum rental is ${max} days.` };
+  const daily = Number(row.daily_rate ?? 0);
+  const gross = days * daily;
+  const deposit = Number(row.deposit_amount ?? 0);
+
+  const { error: insErr } = await sb.from('vehicle_bookings').insert({
+    vehicle_id: v.vehicleId,
+    customer_name: v.name,
+    customer_email: v.email,
+    customer_phone: v.phone,
+    start_date: v.pickup,
+    end_date: v.ret,
+    daily_rate: daily || null,
+    gross_amount: gross || null,
+    total_amount: gross || null,
+    deposit_amount: deposit || null,
+    amount_paid: 0,
+    balance_due: gross || null,
+    booking_status: 'pending_verification',
+    payment_status: 'unpaid',
+    booking_source: 'website',
+    internal_notes: v.notes || null,
+  });
+  if (insErr) {
+    console.error('submitVehicleBooking insert:', insErr.message);
+    return { ok: false, error: 'Something went wrong submitting your request. Please try again.' };
+  }
+  return {
+    ok: true,
+    message:
+      'Request received. Your booking is pending verification — our team will confirm availability and follow ' +
+      'up by email to finalize. No charge has been made.',
+  };
+}
+
 // ============================ HOST SUBMISSION ============================
 const num = (v: FormDataEntryValue | null) => {
   const n = parseFloat(String(v ?? '').replace(/[^0-9.]/g, ''));
