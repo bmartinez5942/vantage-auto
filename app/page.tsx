@@ -110,8 +110,8 @@ export default async function HomePage() {
           <span>The Perfect Pairing</span>
           <h2>Add a Vehicle to Your Stay</h2>
           <p>
-            Enhance your stay with the right vehicle — from practical daily drivers to premium options, all
-            connected through {BRAND}.
+            Enhance your Vantage Stays reservation with the right vehicle — from practical daily drivers to
+            premium options, all connected through our platform.
           </p>
           <Link href="/rent">Explore Stay + Drive</Link>
         </div>
@@ -119,9 +119,9 @@ export default async function HomePage() {
         <div className="va-pairing-card">
           <p className="va-card-label">Your Stay</p>
           <div className="va-stay-image" />
-          <h4>Auren Residences Miami</h4>
-          <small>Part of the Auren ecosystem</small>
-          <a href="https://vantagestays.miami" target="_blank" rel="noreferrer" style={pairingCta}>View Stays</a>
+          <h4>Vantage Stays Miami</h4>
+          <small>May 26 – May 27, 2026</small>
+          <a href="https://vantagestays.miami" target="_blank" rel="noreferrer" style={pairingCta}>View Stay</a>
         </div>
 
         <div className="va-plus-circle"><Plus size={22} /></div>
