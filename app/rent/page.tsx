@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { CatalogVehicleCard } from '@/components/CatalogVehicleCard';
 import { LiveVehicleCard } from '@/components/LiveVehicleCard';
 import { FilterRail } from './FilterRail';
+import { LiveFilterRail } from './LiveFilterRail';
 import { groupedCatalog, countCatalog } from '@/lib/autoCatalog';
 import { fetchApprovedPricing } from '@/lib/pricing';
 import { fetchLiveVehicles } from '@/lib/liveVehicles';
@@ -22,7 +23,10 @@ export default async function RentPage({ searchParams }: { searchParams: SearchP
   const total = countCatalog(filter);
   const pricing = await fetchApprovedPricing();
   // Once real vehicles are imported + approved, the live collection takes over.
-  const live = await fetchLiveVehicles();
+  const allLive = await fetchLiveVehicles();
+  // Category chips derived from actual inventory; filter by ?cat= when set.
+  const liveCategories = Array.from(new Set(allLive.map((v) => v.category).filter(Boolean) as string[])).sort();
+  const live = filter.cat ? allLive.filter((v) => v.category === filter.cat) : allLive;
 
   return (
     <>
@@ -31,20 +35,30 @@ export default async function RentPage({ searchParams }: { searchParams: SearchP
           The <em>Collection</em>
         </h1>
         <p className="section-sub">
-          {live.length > 0
+          {allLive.length > 0
             ? 'Browse our available vehicles and request the right one for your stay, trip, or lifestyle. Every booking is request-to-book — our team confirms availability.'
             : 'A curated catalog — practical daily drivers, premium sedans, SUVs, and exotics. Every listing is a controlled, verified model; request to book and our team confirms availability.'}
         </p>
       </div>
 
-      {live.length > 0 ? (
+      {allLive.length > 0 ? (
         <section className="section-tight">
           <div className="container">
-            <p className="muted" style={{ marginBottom: 18, fontSize: 14 }}>
-              {live.length} {live.length === 1 ? 'vehicle' : 'vehicles'} available
-            </p>
-            <div className="va-vehicle-grid">
-              {live.map((v) => <LiveVehicleCard key={v.id} vehicle={v} />)}
+            <div className={liveCategories.length > 1 ? 'rent-layout' : ''}>
+              <LiveFilterRail categories={liveCategories} />
+              <div>
+                <p className="muted" style={{ marginBottom: 18, fontSize: 14 }}>
+                  {live.length} {live.length === 1 ? 'vehicle' : 'vehicles'} available
+                  {filter.cat ? ` · ${filter.cat}` : ''}
+                </p>
+                {live.length === 0 ? (
+                  <div className="empty-state">No vehicles in this category right now.</div>
+                ) : (
+                  <div className="va-vehicle-grid">
+                    {live.map((v) => <LiveVehicleCard key={v.id} vehicle={v} />)}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </section>
