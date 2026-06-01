@@ -17,6 +17,7 @@ export type LiveVehicle = {
   doors: number | null;
   transmission: string | null;
   fuel_type: string | null;
+  mpg: number | null;
   headline: string | null;
   description: string | null;
   features: string[] | null;
@@ -37,7 +38,7 @@ export type LiveVehicle = {
 };
 
 const FIELDS =
-  'id, slug, make, model, year, trim, category, seats, doors, transmission, fuel_type, headline, ' +
+  'id, slug, make, model, year, trim, category, seats, doors, transmission, fuel_type, mpg, headline, ' +
   'description, features, photos, city, daily_rate, weekly_rate, monthly_rate, deposit_amount, ' +
   'delivery_available, delivery_fee, min_rental_days, max_rental_days, included_miles_per_day, ' +
   'extra_mileage_fee, unlimited_mileage, is_featured';

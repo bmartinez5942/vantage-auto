@@ -32,6 +32,7 @@ export default async function VehicleDetailPage({ params }: { params: { slug: st
   if (v.doors != null) specs.push({ label: 'Doors', value: String(v.doors) });
   if (v.transmission) specs.push({ label: 'Transmission', value: v.transmission });
   if (v.fuel_type) specs.push({ label: 'Fuel', value: v.fuel_type });
+  if (v.mpg != null) specs.push({ label: 'MPG', value: `${v.mpg} mpg` });
   if (v.unlimited_mileage) specs.push({ label: 'Mileage', value: 'Unlimited' });
   else if (v.included_miles_per_day != null) specs.push({ label: 'Miles / day', value: String(v.included_miles_per_day) });
   if (v.extra_mileage_fee != null) specs.push({ label: 'Extra mileage', value: `${formatCurrency(v.extra_mileage_fee)}/mi` });
