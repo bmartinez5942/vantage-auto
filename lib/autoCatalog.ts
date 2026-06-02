@@ -1,5 +1,5 @@
 // ============================================================
-// Vantage Auto — controlled featured-vehicle catalog.
+// Arrivo — controlled featured-vehicle catalog.
 //
 // These cards are the SINGLE SOURCE OF TRUTH for what appears in the
 // "Featured Vehicles" section. They are intentionally NOT pulled from the

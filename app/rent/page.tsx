@@ -8,8 +8,8 @@ import { fetchApprovedPricing } from '@/lib/pricing';
 import { fetchLiveVehicles } from '@/lib/liveVehicles';
 
 export const metadata: Metadata = {
-  title: 'Rent a Vehicle — Vantage Auto',
-  description: 'Browse the Vantage Auto collection and request the right vehicle for your stay, trip, or lifestyle.',
+  title: 'Rent a Vehicle — Arrivo',
+  description: 'Browse the Arrivo collection and request the right vehicle for your stay, trip, or lifestyle.',
 };
 
 type SearchParams = {

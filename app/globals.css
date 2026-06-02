@@ -795,3 +795,61 @@ html.va-light .va-step { background: #fff; border-color: rgba(0,0,0,.07); box-sh
 html.va-light .va-step p { color: rgba(0,0,0,.62); }
 @media (max-width: 1024px) { .va-steps { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 768px)  { .va-steps { grid-template-columns: 1fr; } }
+
+/* ── Arrivo density: trust strip + closing CTA + gallery interactivity ── */
+.va-trust-strip {
+  max-width: 1280px; margin: 26px auto 0; padding: 0 48px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
+}
+.va-trust-item {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 18px 20px; border-radius: 14px;
+  border: 1px solid rgba(212,170,112,0.22);
+}
+html.va-dark  .va-trust-item { background: rgba(255,255,255,0.03); }
+html.va-light .va-trust-item { background: #fff; border-color: rgba(0,0,0,0.07); box-shadow: 0 10px 30px rgba(0,0,0,0.04); }
+.va-trust-k { font-family: var(--va-serif); font-size: 20px; color: var(--va-gold); letter-spacing: -0.01em; }
+.va-trust-v { font-size: 13px; line-height: 1.45; opacity: 0.78; }
+
+.va-cta-band {
+  display: flex; align-items: center; justify-content: space-between; gap: 28px; flex-wrap: wrap;
+  padding: 44px 46px; border-radius: var(--va-radius-xl);
+  border: 1px solid rgba(212,170,112,0.28);
+}
+html.va-dark  .va-cta-band { background: linear-gradient(120deg, rgba(212,170,112,0.10), rgba(255,255,255,0.02)); }
+html.va-light .va-cta-band { background: linear-gradient(120deg, rgba(212,170,112,0.16), #fff); }
+.va-cta-eyebrow { display: block; color: var(--va-gold); text-transform: uppercase; letter-spacing: 0.16em; font-size: 11px; font-weight: 800; }
+.va-cta-band h2 { margin: 12px 0 8px; font-family: var(--va-serif); font-weight: 500; font-size: clamp(30px, 4vw, 46px); letter-spacing: -0.035em; }
+.va-cta-band p { margin: 0; max-width: 520px; opacity: 0.78; line-height: 1.6; }
+.va-cta-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+.va-cta-actions .va-secondary-button { display: inline-block; }
+html.va-dark .va-cta-actions .va-secondary-button { border-color: rgba(255,255,255,0.42); color: #fff; }
+
+/* Interactive gallery (vehicle detail) */
+.gallery-thumb { cursor: pointer; transition: border-color 0.15s, transform 0.15s; }
+.gallery-thumb:hover { transform: translateY(-1px); }
+.gallery-thumb.is-active { border-color: var(--va-gold); box-shadow: 0 0 0 1px var(--va-gold); }
+.gallery-main { cursor: zoom-in; }
+.va-lightbox {
+  position: fixed; inset: 0; z-index: 100; display: grid; place-items: center;
+  background: rgba(0,0,0,0.9); padding: 24px;
+}
+.va-lightbox img { max-width: 96vw; max-height: 88vh; object-fit: contain; border-radius: 10px; }
+.va-lightbox-close {
+  position: absolute; top: 18px; right: 20px; width: 44px; height: 44px;
+  display: grid; place-items: center; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.4); background: rgba(0,0,0,0.4); color: #fff; cursor: pointer; font-size: 20px;
+}
+.va-lightbox-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 52px; height: 52px; display: grid; place-items: center; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.4); background: rgba(0,0,0,0.4); color: #fff; cursor: pointer; font-size: 24px;
+}
+.va-lightbox-nav.prev { left: 18px; } .va-lightbox-nav.next { right: 18px; }
+.va-lightbox-count { position: absolute; bottom: 22px; left: 0; right: 0; text-align: center; color: rgba(255,255,255,0.8); font-size: 13px; }
+
+@media (max-width: 680px) {
+  .va-trust-strip { grid-template-columns: 1fr 1fr; padding: 0 20px; }
+  .va-cta-band { padding: 30px 22px; }
+  .va-lightbox-nav { width: 44px; height: 44px; }
+}

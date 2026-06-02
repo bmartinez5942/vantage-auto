@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { AUTO } from '@/lib/branding';
 
 export const metadata: Metadata = {
-  title: 'Rental Policies — Vantage Auto',
-  description: 'General rental guidelines for Vantage Auto: booking, eligibility, deposit, mileage, delivery, fuel, condition, and changes.',
+  title: 'Rental Policies — Arrivo',
+  description: 'General rental guidelines for Arrivo: booking, eligibility, deposit, mileage, delivery, fuel, condition, and changes.',
 };
 
 const SECTIONS = [

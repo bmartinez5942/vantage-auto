@@ -3,8 +3,8 @@ import { HostForm } from './HostForm';
 import { IconCheck, IconShield, IconCalendar, IconStar } from '@/components/icons';
 
 export const metadata: Metadata = {
-  title: 'Host Your Vehicle — Vantage Auto',
-  description: 'Turn your vehicle into income. Vantage Auto handles listing, screening, and bookings — submit your vehicle for review.',
+  title: 'Host Your Vehicle — Arrivo',
+  description: 'Turn your vehicle into income. Arrivo handles listing, screening, and bookings — submit your vehicle for review.',
 };
 
 const STEPS = [
@@ -18,7 +18,7 @@ export default function HostPage() {
   return (
     <>
       <div className="container page-head">
-        <div className="eyebrow">Host With Vantage Auto</div>
+        <div className="eyebrow">Host With Arrivo</div>
         <h1 className="page-title">
           Turn Your Vehicle<br />Into <em>Income.</em>
         </h1>

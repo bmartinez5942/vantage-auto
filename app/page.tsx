@@ -18,7 +18,7 @@ const BRAND = AUTO.name;
 const SERVICES = [
   {
     // SUV moving through a city — premium, not a race/desert scene
-    title: 'Rent a Vehicle',
+    title: 'Rent with Arrivo',
     description: 'Browse available vehicles, select your dates, and request your booking directly.',
     href: '/rent',
     image: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=1600&auto=format&fit=crop',
@@ -26,7 +26,7 @@ const SERVICES = [
   },
   {
     // Vehicle key handoff / owner interaction (not a street scene)
-    title: 'Host Your Vehicle',
+    title: 'Host with Arrivo',
     description: 'Submit your vehicle for review and turn it into a managed income opportunity.',
     href: '/host',
     image: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?q=80&w=1600&auto=format&fit=crop',
@@ -34,7 +34,7 @@ const SERVICES = [
   },
   {
     // Luxury auto showroom / vehicle lineup
-    title: 'Source a Vehicle',
+    title: 'Source with Arrivo',
     description: 'Looking for a specific vehicle? Our team can help source, inspect, and negotiate.',
     href: '/source',
     image: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1600&auto=format&fit=crop',
@@ -42,11 +42,20 @@ const SERVICES = [
   },
 ];
 
+// Trust strip under the hero — keeps the page feeling substantial without
+// inventing inventory. Real, defensible claims only.
+const STATS = [
+  { k: 'Request', v: 'No charge to request — confirm by our team' },
+  { k: 'Verified', v: 'Every vehicle reviewed & documented' },
+  { k: 'Miami', v: 'Local pickup & delivery available' },
+  { k: 'Auren Group', v: 'Operated within the Auren ecosystem' },
+];
+
 const WHY = [
   { Icon: UserRound, title: 'Professionally Managed', text: 'Every vehicle is reviewed, documented, and managed according to our platform standards.' },
   { Icon: Calendar, title: 'Calendar-Based Booking', text: 'Real-time availability and a request-to-book flow designed around your schedule.' },
   { Icon: Star, title: 'Guest-Focused Experience', text: 'Designed to support every stay with comfort, convenience, and choice.' },
-  { Icon: Car, title: 'Integrated with Auren', text: 'Connected to the Auren ecosystem for a seamless, unified experience.' },
+  { Icon: Car, title: 'Backed by Auren Group', text: 'Operated within the Auren ecosystem for a seamless, unified experience.' },
 ];
 
 const featured = [...featuredAutoCards].sort((a, b) => a.priorityOrder - b.priorityOrder).slice(0, 4);
@@ -78,6 +87,16 @@ export default async function HomePage() {
 
       {/* SEARCH */}
       <SearchBar />
+
+      {/* TRUST STRIP */}
+      <section className="va-trust-strip" aria-label="Why book with Arrivo">
+        {STATS.map(({ k, v }) => (
+          <div className="va-trust-item" key={k}>
+            <span className="va-trust-k">{k}</span>
+            <span className="va-trust-v">{v}</span>
+          </div>
+        ))}
+      </section>
 
       {/* HOW IT WORKS */}
       <section className="va-section">
@@ -176,6 +195,21 @@ export default async function HomePage() {
               <p>{text}</p>
             </article>
           ))}
+        </div>
+      </section>
+
+      {/* CLOSING CTA */}
+      <section className="va-section">
+        <div className="va-cta-band">
+          <div>
+            <span className="va-cta-eyebrow">Arrivo — the right vehicle, ready when you arrive</span>
+            <h2>Plan your stay around the perfect drive.</h2>
+            <p>Tell us your dates and we&apos;ll match you with a verified vehicle — request to book, no charge to ask.</p>
+          </div>
+          <div className="va-cta-actions">
+            <Link href="/rent" className="va-primary-button">Browse Vehicles</Link>
+            <Link href="/host" className="va-secondary-button">List Your Vehicle</Link>
+          </div>
         </div>
       </section>
     </div>

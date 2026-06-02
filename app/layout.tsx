@@ -19,9 +19,9 @@ const sans = Inter({
   display: 'swap',
 });
 
-const SITE_TITLE = 'Vantage Auto — Your Stay, Now in Motion.';
+const SITE_TITLE = 'Arrivo — The right vehicle, ready when you arrive.';
 const SITE_DESC =
-  'From practical daily drivers to premium vehicles, Vantage Auto makes it simple to book the right car for your stay, trip, or lifestyle. Rent, host, or source a vehicle in Miami.';
+  'From practical daily drivers to premium vehicles, Arrivo makes it simple to book the right car for your stay, trip, or lifestyle. Rent, host, or source a vehicle in Miami.';
 
 export const metadata: Metadata = {
   title: SITE_TITLE,
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     title: SITE_TITLE,
     description: SITE_DESC,
     type: 'website',
-    siteName: 'Vantage Auto',
+    siteName: 'Arrivo',
     url: '/',
   },
   twitter: { card: 'summary_large_image', title: SITE_TITLE, description: SITE_DESC },

@@ -7,17 +7,17 @@ export function Footer() {
     <footer className="va-footer">
       <div>
         <Link href="/" className="va-brand va-footer-brand" aria-label={`${AUTO.name} — home`}>
-          <span className="va-brand-mark">V</span>
+          <span className="va-brand-mark">A</span>
           <span>{AUTO.name}</span>
         </Link>
-        <p>Vehicle rentals, hosting, and sourcing — connected to the Auren ecosystem.</p>
+        <p>The right vehicle, ready when you arrive — rent, host, or source for any stay or trip.</p>
         <div className="va-socials" aria-label={`Follow ${AUTO.name}`}>
           <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram"><IconInstagram /></a>
           <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn"><IconLinkedIn /></a>
           <a href={`mailto:${AUTO.email}`} aria-label="Email"><IconMail /></a>
         </div>
         <p style={{ marginTop: 18, fontSize: 12, opacity: 0.6 }}>
-          © {new Date().getFullYear()} {AUTO.legalName}.{' '}
+          © {new Date().getFullYear()} {AUTO.legalName}. {AUTO.name} is operated by {AUTO.operatedBy}.{' '}
           <Link href="/attributions" style={{ textDecoration: 'underline' }}>Image credits</Link>
         </p>
       </div>

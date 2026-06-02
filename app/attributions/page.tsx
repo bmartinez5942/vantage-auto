@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Image Credits — Vantage Auto',
-  description: 'Attribution for vehicle photography used on Vantage Auto.',
+  title: 'Image Credits — Arrivo',
+  description: 'Attribution for vehicle photography used on Arrivo.',
 };
 
 type Credit = {
@@ -63,7 +63,7 @@ export default function AttributionsPage() {
             <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noreferrer noopener" style={{ color: 'var(--gold)' }}>
               CC BY-SA 4.0
             </a>
-            . Images were resized and recompressed for the web. Photography will be replaced with Vantage Auto&apos;s
+            . Images were resized and recompressed for the web. Photography will be replaced with Arrivo&apos;s
             own as it becomes available. Questions? <Link href="/contact" style={{ color: 'var(--gold)' }}>Contact us</Link>.
           </p>
         </div>

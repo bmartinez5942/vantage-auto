@@ -3,7 +3,7 @@ import { SourceForm } from './SourceForm';
 import { IconSearch, IconKey, IconCheck, IconShield } from '@/components/icons';
 
 export const metadata: Metadata = {
-  title: 'Source a Vehicle — Vantage Auto',
+  title: 'Source a Vehicle — Arrivo',
   description: 'Tell us what you want and we’ll find, vet, and acquire the right vehicle for you.',
 };
 
@@ -23,7 +23,7 @@ export default function SourcePage() {
           We’ll Find the<br />Right <em>Vehicle.</em>
         </h1>
         <p className="section-sub">
-          Looking for something specific — to buy or to add to the Vantage Auto fleet? Tell us what you need and our
+          Looking for something specific — to buy or to add to the Arrivo fleet? Tell us what you need and our
           team will source, vet, and acquire it on your behalf.
         </p>
       </div>

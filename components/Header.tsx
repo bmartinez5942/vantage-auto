@@ -28,7 +28,7 @@ export function Header() {
   return (
     <header className="va-header">
       <Link href="/" className="va-brand" aria-label={`${AUTO.name} — home`}>
-        <span className="va-brand-mark">V</span>
+        <span className="va-brand-mark">A</span>
         <span>{AUTO.name}</span>
       </Link>
 

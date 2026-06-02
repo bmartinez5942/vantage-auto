@@ -5,14 +5,15 @@ import { fetchLiveVehicleBySlug, fetchUnavailableRanges, vehicleName } from '@/l
 import { formatCurrency, formatDate } from '@/lib/format';
 import { IconCheck } from '@/components/icons';
 import { BookingRequestForm } from './BookingRequestForm';
+import { Gallery } from './Gallery';
 
 export const revalidate = 300;
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const v = await fetchLiveVehicleBySlug(params.slug);
-  if (!v) return { title: 'Vehicle — Vantage Auto' };
+  if (!v) return { title: 'Vehicle — Arrivo' };
   const name = vehicleName(v);
-  return { title: `${name} — Vantage Auto`, description: v.headline ?? `Request to book the ${name} from Vantage Auto.` };
+  return { title: `${name} — Arrivo`, description: v.headline ?? `Request to book the ${name} from Arrivo.` };
 }
 
 export default async function VehicleDetailPage({ params }: { params: { slug: string } }) {
@@ -21,8 +22,6 @@ export default async function VehicleDetailPage({ params }: { params: { slug: st
 
   const name = vehicleName(v);
   const photos = (v.photos ?? []).filter(Boolean);
-  const main = photos[0];
-  const thumbs = photos.slice(1, 6);
   const unavailable = await fetchUnavailableRanges(v.id);
 
   const specs: { label: string; value: string }[] = [];
@@ -51,24 +50,7 @@ export default async function VehicleDetailPage({ params }: { params: { slug: st
         <div className="container">
           <div className="detail-layout">
             <div>
-              <div className="gallery-main">
-                {main ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={main} alt={name} />
-                ) : (
-                  <div className="vehicle-photo-fallback" aria-hidden="true"><span>{name}</span></div>
-                )}
-              </div>
-              {thumbs.length > 0 && (
-                <div className="gallery-thumbs">
-                  {thumbs.map((p, i) => (
-                    <div className="gallery-thumb" key={i}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={p} alt="" loading="lazy" />
-                    </div>
-                  ))}
-                </div>
-              )}
+              <Gallery photos={photos} name={name} />
 
               {specs.length > 0 && (
                 <div className="spec-grid">

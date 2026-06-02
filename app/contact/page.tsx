@@ -5,8 +5,8 @@ import { IconPin, IconKey, IconCar } from '@/components/icons';
 import { ContactForm } from './ContactForm';
 
 export const metadata: Metadata = {
-  title: 'Contact — Vantage Auto',
-  description: 'Get in touch with the Vantage Auto team about renting, hosting, or sourcing a vehicle.',
+  title: 'Contact — Arrivo',
+  description: 'Get in touch with the Arrivo team about renting, hosting, or sourcing a vehicle.',
 };
 
 export default function ContactPage() {

@@ -4,8 +4,8 @@ import { IconShield, IconStar, IconKey, IconCalendar } from '@/components/icons'
 import { AUTO } from '@/lib/branding';
 
 export const metadata: Metadata = {
-  title: 'About — Vantage Auto',
-  description: 'Vantage Auto is part of the Auren ecosystem — vehicle rentals, hosting, and sourcing for every type of trip.',
+  title: 'About — Arrivo',
+  description: 'Arrivo is part of the Auren ecosystem — vehicle rentals, hosting, and sourcing for every type of trip.',
 };
 
 const VALUES = [

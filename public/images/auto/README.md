@@ -1,4 +1,4 @@
-# Vantage Auto — featured vehicle images
+# Arrivo — featured vehicle images
 
 **Status:** all 9 cards now have verified images in place (sourced from
 Wikimedia Commons, each checked against its label — see `CREDITS.md`).

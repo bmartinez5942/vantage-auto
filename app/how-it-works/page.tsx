@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { AUTO } from '@/lib/branding';
 
 export const metadata: Metadata = {
-  title: 'How It Works — Vantage Auto',
-  description: 'Booking a vehicle with Vantage Auto is request-to-book: browse, request, get verified, and drive. No instant booking, no surprise charges.',
+  title: 'How It Works — Arrivo',
+  description: 'Booking a vehicle with Arrivo is request-to-book: browse, request, get verified, and drive. No instant booking, no surprise charges.',
 };
 
 const STEPS = [

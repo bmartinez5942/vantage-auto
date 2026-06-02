@@ -1,14 +1,20 @@
-// Single source of truth for Vantage Auto's public-facing identity.
-// Mirrors the division entry in auren-command/lib/branding.ts.
+// Single source of truth for Arrivo's public-facing identity.
+// (Phase 4 rebrand: "Vantage Auto" → "Arrivo". Public stay brand is "Vantage
+// Stays". "Auren Group" appears publicly only as the operator.)
 export const AUTO = {
-  name: 'Vantage Auto',
-  // Public-facing brand is always "Vantage Auto" — no "Group"/"Rentals"/etc.
-  legalName: 'Vantage Auto',
+  name: 'Arrivo',
+  legalName: 'Arrivo',
+  // Shown wherever we disclose the operating company.
+  operatedBy: 'Auren Group',
+  // Homepage headline.
   tagline: 'Your Stay, Now in Motion.',
-  domain: 'vantageautogroup.us',
+  // Brand line / SEO tagline.
+  motto: 'The right vehicle, ready when you arrive.',
+  // New primary domain (DNS cutover handled separately in Vercel — Phase 4).
+  domain: 'bearrivo.com',
   email: 'auto@aurengroup.us',
   // No public phone number until a real business line is provisioned.
-  parent: 'Auren',
+  parent: 'Auren Group',
   cities: ['Miami, FL'],
   categories: ['Economy', 'Sedan', 'SUV', 'Premium', 'Electric', 'Specialty'] as const,
 } as const;

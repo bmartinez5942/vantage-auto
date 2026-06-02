@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { AUTO } from '@/lib/branding';
 
 export const metadata: Metadata = {
-  title: 'FAQ — Vantage Auto',
-  description: 'Answers about booking, deposits, mileage, delivery, eligibility, and how request-to-book works at Vantage Auto.',
+  title: 'FAQ — Arrivo',
+  description: 'Answers about booking, deposits, mileage, delivery, eligibility, and how request-to-book works at Arrivo.',
 };
 
 const FAQS = [
@@ -37,7 +37,7 @@ const FAQS = [
     a: 'Our vehicles are individually managed and some may also be listed on other platforms, so we confirm each request against the live calendar before approving. It means your booking is real and verified rather than an auto-accept that can fall through.',
   },
   {
-    q: 'Who is Vantage Auto?',
+    q: 'Who is Arrivo?',
     a: `${AUTO.name} is the mobility brand connected to the Auren ecosystem, alongside Vantage Stays. We make it simple to book the right vehicle for your stay, trip, or lifestyle.`,
   },
   {
