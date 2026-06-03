@@ -853,3 +853,31 @@ html.va-dark .va-cta-actions .va-secondary-button { border-color: rgba(255,255,2
   .va-cta-band { padding: 30px 22px; }
   .va-lightbox-nav { width: 44px; height: 44px; }
 }
+
+/* ── Mobile hero: dedicated portrait crop (car centered, text zone on top) ── */
+@media (max-width: 768px) {
+  html.va-dark .va-hero {
+    background-image:
+      linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.16) 40%, rgba(0,0,0,0.32) 100%),
+      url("/images/hero-dark-mobile.jpg");
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    min-height: 680px;
+    padding: 92px 22px 132px;
+  }
+  html.va-light .va-hero {
+    background-image:
+      linear-gradient(180deg, rgba(248,244,237,0.34) 0%, rgba(248,244,237,0.04) 40%, rgba(248,244,237,0.20) 100%),
+      url("/images/hero-light-mobile.jpg");
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    min-height: 680px;
+    padding: 92px 22px 132px;
+  }
+  /* search card: safe spacing + full-width tap target (clears the browser bar) */
+  .va-search-wrap { margin-top: -58px; padding: 0 20px 30px; position: relative; z-index: 3; }
+  .va-search-button { width: 100%; min-height: 56px; }
+  .va-page { padding-bottom: env(safe-area-inset-bottom); }
+}
