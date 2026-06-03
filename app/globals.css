@@ -854,30 +854,35 @@ html.va-dark .va-cta-actions .va-secondary-button { border-color: rgba(255,255,2
   .va-lightbox-nav { width: 44px; height: 44px; }
 }
 
-/* ── Mobile hero: dedicated portrait crop (car centered, text zone on top) ── */
+/* ── Mobile hero: dedicated portrait crop. Content TOP-aligned (no black gap) ── */
 @media (max-width: 768px) {
-  html.va-dark .va-hero {
-    background-image:
-      linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.16) 40%, rgba(0,0,0,0.32) 100%),
-      url("/images/hero-dark-mobile.jpg");
+  html.va-dark .va-hero,
+  html.va-light .va-hero {
+    min-height: 760px;
+    padding: 48px 20px 150px;
     background-size: cover;
     background-position: center top;
     background-repeat: no-repeat;
-    min-height: 680px;
-    padding: 92px 22px 132px;
+  }
+  html.va-dark .va-hero {
+    background-image:
+      linear-gradient(180deg, rgba(0,0,0,0.64) 0%, rgba(0,0,0,0.50) 28%, rgba(0,0,0,0.66) 58%, rgba(0,0,0,0.86) 100%),
+      url("/images/hero-dark-mobile.jpg");
   }
   html.va-light .va-hero {
     background-image:
-      linear-gradient(180deg, rgba(248,244,237,0.34) 0%, rgba(248,244,237,0.04) 40%, rgba(248,244,237,0.20) 100%),
+      linear-gradient(180deg, rgba(248,244,237,0.42) 0%, rgba(248,244,237,0.12) 30%, rgba(248,244,237,0.34) 62%, rgba(248,244,237,0.58) 100%),
       url("/images/hero-light-mobile.jpg");
-    background-size: cover;
-    background-position: center top;
-    background-repeat: no-repeat;
-    min-height: 680px;
-    padding: 92px 22px 132px;
   }
-  /* search card: safe spacing + full-width tap target (clears the browser bar) */
-  .va-search-wrap { margin-top: -58px; padding: 0 20px 30px; position: relative; z-index: 3; }
+  /* top-align the content so the headline starts just below the header */
+  .va-hero { display: flex; align-items: flex-start; }
+  .va-hero-content { margin-top: 0; padding-top: 0; position: relative; z-index: 2; max-width: 100%; }
+  .va-hero h1 { font-size: clamp(54px, 14vw, 68px); line-height: 0.95; letter-spacing: -0.055em; margin: 0 0 22px; }
+  .va-hero p { font-size: 17px; line-height: 1.55; margin-bottom: 32px; max-width: 100%; }
+  .va-hero-actions { display: grid; grid-template-columns: 1fr; gap: 14px; width: 100%; }
+  .va-hero-actions a { width: 100%; text-align: center; }
+  /* search card overlaps the bottom of the hero cleanly */
+  .va-search-wrap { margin-top: -90px; padding: 0 20px 36px; position: relative; z-index: 5; }
   .va-search-button { width: 100%; min-height: 56px; }
   .va-page { padding-bottom: env(safe-area-inset-bottom); }
 }
