@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
+import { BrandMark } from './icons';
 import { AUTO } from '@/lib/branding';
 
 const DESKTOP_NAV = [
@@ -28,7 +29,7 @@ export function Header() {
   return (
     <header className="va-header">
       <Link href="/" className="va-brand" aria-label={`${AUTO.name} — home`}>
-        <span className="va-brand-mark">A</span>
+        <span className="va-brand-mark"><BrandMark /></span>
         <span>{AUTO.name}</span>
       </Link>
 

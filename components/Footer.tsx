@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { IconInstagram, IconLinkedIn, IconMail } from '@/components/icons';
+import { IconInstagram, IconLinkedIn, IconMail, BrandMark } from '@/components/icons';
 import { AUTO } from '@/lib/branding';
 
 export function Footer() {
@@ -7,7 +7,7 @@ export function Footer() {
     <footer className="va-footer">
       <div>
         <Link href="/" className="va-brand va-footer-brand" aria-label={`${AUTO.name} — home`}>
-          <span className="va-brand-mark">A</span>
+          <span className="va-brand-mark"><BrandMark /></span>
           <span>{AUTO.name}</span>
         </Link>
         <p>The right vehicle, ready when you arrive — rent, host, or source for any stay or trip.</p>

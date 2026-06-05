@@ -67,3 +67,14 @@ export const IconYouTube = (p: P) => (
 export const IconMail = (p: P) => (
   <svg {...base} {...p}><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></svg>
 );
+
+// Arrivo brand mark: triangular "A" (the journey) with a road running up the
+// center toward the horizon. Uses currentColor so it adapts to theme/gold.
+export const BrandMark = (p: P) => (
+  <svg viewBox="0 0 100 92" fill="none" aria-hidden="true" {...p}>
+    {/* the A — two angled bars meeting at a sharp apex, open at the base */}
+    <path d="M50 7 L89 85 L73 85 L50 31 L27 85 L11 85 Z" fill="currentColor" />
+    {/* the road — dashed lane markings receding up the middle */}
+    <path d="M50 81 L50 37" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeDasharray="3 9" opacity="0.55" />
+  </svg>
+);
