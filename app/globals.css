@@ -881,8 +881,8 @@ html.va-dark .va-cta-actions .va-secondary-button { border-color: rgba(255,255,2
   .va-hero p { font-size: 17px; line-height: 1.55; margin-bottom: 32px; max-width: 100%; }
   .va-hero-actions { display: grid; grid-template-columns: 1fr; gap: 14px; width: 100%; }
   .va-hero-actions a { width: 100%; text-align: center; }
-  /* search card overlaps the bottom of the hero cleanly */
-  .va-search-wrap { margin-top: -90px; padding: 0 20px 36px; position: relative; z-index: 5; }
+  /* search card sits lower so the full vehicle shows; tighter gap below */
+  .va-search-wrap { margin-top: -28px; padding: 0 20px 14px; position: relative; z-index: 5; }
   .va-search-button { width: 100%; min-height: 56px; }
   .va-page { padding-bottom: env(safe-area-inset-bottom); }
 }
