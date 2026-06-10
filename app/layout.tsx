@@ -81,13 +81,27 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
   alternates: { canonical: SITE_URL },
   openGraph: {
-    title: SITE_TITLE,
-    description: SITE_DESC,
+    title: 'Arrivo',
+    description: 'The right vehicle, ready when you arrive. Rent, host, or source vehicles for your stay or trip.',
     type: 'website',
     siteName: 'Arrivo',
-    url: '/',
+    url: SITE_URL,
+    locale: 'en_US',
+    images: [
+      {
+        url: `${SITE_URL}/og/arrivo-og.jpg`,
+        width: 1200,
+        height: 630,
+        alt: 'Arrivo — premium vehicle rental in Miami',
+      },
+    ],
   },
-  twitter: { card: 'summary_large_image', title: SITE_TITLE, description: SITE_DESC },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Arrivo',
+    description: 'The right vehicle, ready when you arrive. Rent, host, or source vehicles for your stay or trip.',
+    images: [`${SITE_URL}/og/arrivo-og.jpg`],
+  },
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
