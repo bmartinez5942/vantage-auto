@@ -8,8 +8,8 @@
 // from a branded address and to other recipients. Override the recipient with
 // NOTIFY_TO if needed.
 
-const NOTIFY_TO = process.env.NOTIFY_TO || 'bez.sellsmiami@gmail.com';
-const NOTIFY_FROM = process.env.NOTIFY_FROM || 'Arrivo <onboarding@resend.dev>';
+const NOTIFY_TO = (process.env.NOTIFY_TO || 'bez.sellsmiami@gmail.com').trim();
+const NOTIFY_FROM = (process.env.NOTIFY_FROM || 'Arrivo <onboarding@resend.dev>').trim();
 
 type Fields = Record<string, string | number | null | undefined>;
 
@@ -17,7 +17,9 @@ const esc = (s: unknown) =>
   String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 export async function notifyInquiry(subject: string, fields: Fields, replyTo?: string): Promise<void> {
-  const key = process.env.RESEND_API_KEY;
+  // Trim — a stray space/newline pasted into the env var makes the
+  // Authorization header invalid and fetch throws a TypeError.
+  const key = process.env.RESEND_API_KEY?.trim();
   if (!key) {
     console.warn('[notify] RESEND_API_KEY not set — skipping email for:', subject);
     return;
@@ -51,6 +53,6 @@ export async function notifyInquiry(subject: string, fields: Fields, replyTo?: s
     });
     if (!res.ok) console.error('[notify] resend error', res.status, await res.text().catch(() => ''));
   } catch (err) {
-    console.error('[notify] send failed:', err);
+    console.error('[notify] send failed:', err instanceof Error ? `${err.name}: ${err.message}` : String(err));
   }
 }
