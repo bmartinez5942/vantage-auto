@@ -5,6 +5,7 @@
 // submission is an intake the team reviews in the admin.
 import { z } from 'zod';
 import { serverClient } from '@/lib/supabase';
+import { notifyInquiry } from '@/lib/notify';
 
 export type FormResult = {
   ok: boolean;
@@ -96,6 +97,21 @@ export async function submitVehicleBooking(_prev: FormResult, formData: FormData
     console.error('submitVehicleBooking insert:', insErr.message);
     return { ok: false, error: 'Something went wrong submitting your request. Please try again.' };
   }
+  await notifyInquiry(
+    `New booking request — ${v.name}`,
+    {
+      Name: v.name,
+      Email: v.email,
+      Phone: v.phone,
+      'Pick-up': v.pickup,
+      Return: v.ret,
+      Days: days,
+      'Est. total': gross ? `$${gross}` : '—',
+      'Vehicle ID': v.vehicleId,
+      Notes: v.notes || '',
+    },
+    v.email,
+  );
   return {
     ok: true,
     message:
@@ -195,6 +211,21 @@ export async function submitHostListing(
     console.error('submitHostListing insert:', error.message);
     return { ok: false, error: 'Something went wrong. Please try again.' };
   }
+  await notifyInquiry(
+    `New host submission — ${d.ownerName}`,
+    {
+      Owner: d.ownerName,
+      Email: d.email,
+      Phone: d.phone,
+      City: d.city || '',
+      Vehicle: `${(formData.get('year') as string) || ''} ${d.make} ${d.model}`.trim(),
+      Mileage: int(formData.get('mileage')) ?? '',
+      'Asking daily': num(formData.get('reqDaily')) ? `$${num(formData.get('reqDaily'))}` : '',
+      'Asking weekly': num(formData.get('reqWeekly')) ? `$${num(formData.get('reqWeekly'))}` : '',
+      Notes: combinedNotes || '',
+    },
+    d.email,
+  );
   return {
     ok: true,
     message:
@@ -244,6 +275,11 @@ export async function submitContactMessage(
     console.error('submitContactMessage insert:', error.message);
     return { ok: false, error: 'Something went wrong sending your message. Please try again.' };
   }
+  await notifyInquiry(
+    `New contact message — ${d.name}`,
+    { Name: d.name, Email: d.email, Phone: d.phone || '', Subject: d.subject || '', Message: d.message },
+    d.email,
+  );
   return {
     ok: true,
     message: 'Thanks for reaching out — your message has been received and our team will reply by email shortly.',
@@ -295,6 +331,19 @@ export async function submitSourceRequest(
     console.error('submitSourceRequest insert:', error.message);
     return { ok: false, error: 'Something went wrong. Please try again.' };
   }
+  await notifyInquiry(
+    `New source-a-vehicle request — ${d.fullName}`,
+    {
+      Name: d.fullName,
+      Email: d.email,
+      Phone: d.phone,
+      'Looking for': d.desired,
+      Budget: num(formData.get('budget')) ? `$${num(formData.get('budget'))}` : '',
+      Timeline: (formData.get('timeline') as string)?.trim() || '',
+      Notes: (formData.get('notes') as string)?.trim() || '',
+    },
+    d.email,
+  );
   return {
     ok: true,
     message:
