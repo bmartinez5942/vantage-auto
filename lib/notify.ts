@@ -39,6 +39,7 @@ export async function notifyInquiry(subject: string, fields: Fields, replyTo?: s
     <p style="color:#aaa;font:12px sans-serif;margin:18px 0 0">Sent automatically from Arrivo · bearrivo.com</p>
   </div>`;
 
+  console.log(`[notify] sending "${subject}" -> ${NOTIFY_TO} (from ${NOTIFY_FROM})`);
   try {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -51,7 +52,14 @@ export async function notifyInquiry(subject: string, fields: Fields, replyTo?: s
         ...(replyTo ? { reply_to: replyTo } : {}),
       }),
     });
-    if (!res.ok) console.error('[notify] resend error', res.status, await res.text().catch(() => ''));
+    const body = await res.text().catch(() => '');
+    if (!res.ok) {
+      console.error('[notify] resend error', res.status, body);
+    } else {
+      // Resend returns { id: "..." } on success — log it so we can confirm
+      // delivery per-submission in the runtime logs.
+      console.log('[notify] sent OK', res.status, body);
+    }
   } catch (err) {
     console.error('[notify] send failed:', err instanceof Error ? `${err.name}: ${err.message}` : String(err));
   }
