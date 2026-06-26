@@ -6,11 +6,14 @@ import { Heart } from 'lucide-react';
 import { vehicleName, vehicleHref, type LiveVehicle } from '@/lib/liveVehicles';
 import { formatCurrency } from '@/lib/format';
 
-/** Dedicated pre-sharpened 1200x900 card thumbnail stored next to the
- *  gallery photos ({folder}/card.jpg). Falls back to the full-size first
- *  photo if the thumb doesn't exist for a vehicle. */
+/** Dedicated pre-sharpened 1200x900 baseline-JPEG card thumbnail stored next
+ *  to the gallery photos ({folder}/card.jpg). Falls back to the full-size
+ *  first photo if the thumb doesn't exist for a vehicle.
+ *  The ?v tag busts the long-lived browser/CDN cache when a thumb is
+ *  re-encoded — bump it whenever card.jpg files are regenerated. */
+const CARD_THUMB_VERSION = '2';
 function cardThumbUrl(photo: string): string {
-  return photo.replace(/\/[^/]+$/, '/card.jpg');
+  return photo.replace(/\/[^/]+$/, `/card.jpg?v=${CARD_THUMB_VERSION}`);
 }
 
 /** Card for an admin-approved live DB vehicle. The whole card links to the
