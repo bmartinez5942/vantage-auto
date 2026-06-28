@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Heart } from 'lucide-react';
 import { vehicleName, vehicleHref, type LiveVehicle } from '@/lib/liveVehicles';
@@ -31,13 +32,17 @@ export function LiveVehicleCard({ vehicle }: { vehicle: LiveVehicle }) {
     <Link href={vehicleHref(vehicle)} className="va-vehicle-card" aria-label={`View ${name}`}>
       <div className="va-vehicle-image">
         {src && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             className="va-img"
             src={src}
             alt={name}
-            loading="lazy"
-            decoding="async"
+            fill
+            // Card renders ~290px (4-col desktop) → ~45vw (2-col) → ~90vw (1-col).
+            // Next serves a right-sized AVIF/WebP per breakpoint + DPR — no crude
+            // browser downscale of the full 1200px JPEG.
+            sizes="(max-width: 680px) 90vw, (max-width: 1080px) 45vw, 320px"
+            quality={90}
+            style={{ objectFit: 'cover' }}
             onError={() => { if (!thumbFailed) setThumbFailed(true); }}
           />
         )}
