@@ -1,6 +1,7 @@
 // Homepage — built on the approved .va- layout foundation, wired to the
 // controlled catalog. No phone, no shown pricing (admin-approved only),
 // request-to-book only (no instant booking). Header/Footer come from layout.
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Car, UserRound, Search, Calendar, Star, Plus } from 'lucide-react';
 import { SearchBar } from '@/components/SearchBar';
@@ -10,8 +11,21 @@ import { featuredAutoCards } from '@/lib/autoCatalog';
 import { fetchApprovedPricing } from '@/lib/pricing';
 import { fetchLiveVehicles } from '@/lib/liveVehicles';
 import { AUTO } from '@/lib/branding';
+import { pageMeta } from '@/lib/seo';
 
 export const revalidate = 600;
+
+// Homepage metadata: the keyworded default title from the layout, plus a
+// self-referencing canonical + page-specific OG (see lib/seo.ts).
+export const metadata: Metadata = {
+  ...pageMeta({
+    title: 'Miami Car Rental & Vehicle Brokerage',
+    description:
+      'Rent the right car in Miami — practical daily drivers to premium vehicles. Request to book with flexible delivery, or host and source vehicles with Arrivo.',
+    path: '/',
+  }),
+  title: { absolute: 'Miami Car Rental & Vehicle Brokerage | Arrivo' },
+};
 
 const BRAND = AUTO.name;
 

@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/seo';
 import Link from 'next/link';
 import { AUTO } from '@/lib/branding';
 
-export const metadata: Metadata = {
-  title: 'Rental Policies — Arrivo',
-  description: 'General rental guidelines for Arrivo: booking, eligibility, deposit, mileage, delivery, fuel, condition, and changes.',
-};
+export const metadata: Metadata = pageMeta({
+  title: 'Rental Policies',
+  description: 'General rental guidelines for Arrivo in Miami: booking, eligibility, deposit, mileage, delivery, fuel, condition, and changes.',
+  path: '/policies',
+});
 
 const SECTIONS = [
   { h: 'Booking & confirmation', b: 'All reservations are request-to-book. Submitting a request places no charge. Our team reviews availability and your details and confirms by email; bookings remain pending verification until then. There is no instant booking.' },

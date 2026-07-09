@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/seo';
 import { HostForm } from './HostForm';
 import { IconCheck, IconShield, IconCalendar, IconStar } from '@/components/icons';
 
-export const metadata: Metadata = {
-  title: 'Host Your Vehicle — Arrivo',
-  description: 'Turn your vehicle into income. Arrivo handles listing, screening, and bookings — submit your vehicle for review.',
-};
+export const metadata: Metadata = pageMeta({
+  title: 'Earn Income Hosting Your Car in Miami',
+  description: 'Turn your vehicle into income in Miami. Arrivo handles listing, guest screening, and bookings — submit your car for review and start earning.',
+  path: '/host',
+});
 
 const STEPS = [
   { n: '1', icon: <IconStar />, title: 'Submit', body: 'Tell us about your vehicle and the terms you have in mind.' },

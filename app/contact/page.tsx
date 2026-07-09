@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/seo';
 import Link from 'next/link';
 import { AUTO } from '@/lib/branding';
 import { IconPin, IconKey, IconCar } from '@/components/icons';
 import { ContactForm } from './ContactForm';
 
-export const metadata: Metadata = {
-  title: 'Contact — Arrivo',
-  description: 'Get in touch with the Arrivo team about renting, hosting, or sourcing a vehicle.',
-};
+export const metadata: Metadata = pageMeta({
+  title: 'Contact — Miami Vehicle Rentals',
+  description: 'Get in touch with the Arrivo team in Miami about renting a car, hosting your vehicle, or sourcing your next one.',
+  path: '/contact',
+});
 
 export default function ContactPage() {
   return (

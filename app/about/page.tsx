@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/seo';
 import Link from 'next/link';
 import { IconShield, IconStar, IconKey, IconCalendar } from '@/components/icons';
 import { AUTO } from '@/lib/branding';
 
-export const metadata: Metadata = {
-  title: 'About — Arrivo',
-  description: 'Arrivo is part of the Auren ecosystem — vehicle rentals, hosting, and sourcing for every type of trip.',
-};
+export const metadata: Metadata = pageMeta({
+  title: 'About Us — Miami Vehicle Rentals & Brokerage',
+  description: 'Arrivo is the vehicle arm of the Auren ecosystem — car rentals, vehicle hosting, and sourcing in Miami for every type of trip.',
+  path: '/about',
+});
 
 const VALUES = [
   { icon: <IconShield />, title: 'Professionally Managed', body: 'Every vehicle is reviewed, documented, and managed according to our platform standards.' },
@@ -21,7 +23,7 @@ export default function AboutPage() {
       <div className="container page-head">
         <div className="eyebrow">About</div>
         <h1 className="page-title">
-          Your Stay,<br />Now in <em>Motion.</em>
+          About <em>Arrivo.</em>
         </h1>
         <p className="section-sub">
           {AUTO.name} is the mobility division of the Auren ecosystem. We make it simple to book the right vehicle

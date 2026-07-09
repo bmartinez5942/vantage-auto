@@ -19,9 +19,13 @@ const sans = Inter({
   display: 'swap',
 });
 
-const SITE_TITLE = 'Arrivo — The right vehicle, ready when you arrive.';
+// Homepage/default title carries the Miami + car-rental keywords; inner
+// pages set their own keyworded title and the template appends the brand
+// exactly once (pages must NOT include "Arrivo" in their title strings —
+// that caused the old "— Arrivo — Arrivo" duplication).
+const SITE_TITLE = 'Miami Car Rental & Vehicle Brokerage | Arrivo';
 const SITE_DESC =
-  'From practical daily drivers to premium vehicles, Arrivo makes it simple to book the right car for your stay, trip, or lifestyle. Rent, host, or source a vehicle in Miami.';
+  'Rent the right car in Miami — practical daily drivers to premium vehicles. Request to book with flexible delivery, or host and source vehicles with Arrivo.';
 
 const SITE_URL = `https://${AUTO.domain}`;
 
@@ -75,14 +79,16 @@ const ORG_SCHEMA = {
 };
 
 export const metadata: Metadata = {
-  title: { default: SITE_TITLE, template: `%s — ${AUTO.name}` },
+  title: { default: SITE_TITLE, template: `%s | ${AUTO.name}` },
   description: SITE_DESC,
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? SITE_URL),
   robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
-  alternates: { canonical: SITE_URL },
+  // NO canonical here — a layout-level canonical applies the SAME url to
+  // every route (it canonicalized all pages to the homepage and deindexed
+  // the subpages). Every page sets its own via lib/seo.ts pageMeta().
   openGraph: {
-    title: 'Arrivo',
-    description: 'The right vehicle, ready when you arrive. Rent, host, or source vehicles for your stay or trip.',
+    title: SITE_TITLE,
+    description: SITE_DESC,
     type: 'website',
     siteName: 'Arrivo',
     url: SITE_URL,
@@ -98,8 +104,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Arrivo',
-    description: 'The right vehicle, ready when you arrive. Rent, host, or source vehicles for your stay or trip.',
+    title: SITE_TITLE,
+    description: SITE_DESC,
     images: [`${SITE_URL}/og/arrivo-og.jpg`],
   },
   icons: {

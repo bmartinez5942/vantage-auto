@@ -60,7 +60,7 @@ export function Gallery({ photos, name }: { photos: string[]; name: string }) {
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={imgs[safe]} alt={`${name} — photo ${safe + 1}`} />
+        <img src={imgs[safe]} alt={`${name} available for rent in Miami through Arrivo — photo ${safe + 1} of ${imgs.length}`} />
       </div>
 
       {imgs.length > 1 && (

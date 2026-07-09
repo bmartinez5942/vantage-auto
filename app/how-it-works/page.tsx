@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/seo';
 import Link from 'next/link';
 import { AUTO } from '@/lib/branding';
 
-export const metadata: Metadata = {
-  title: 'How It Works — Arrivo',
-  description: 'Booking a vehicle with Arrivo is request-to-book: browse, request, get verified, and drive. No instant booking, no surprise charges.',
-};
+export const metadata: Metadata = pageMeta({
+  title: 'How Request-to-Book Car Rental Works',
+  description: 'Booking a rental car with Arrivo in Miami is request-to-book: browse, request your dates, get verified, and drive. No instant booking, no surprise charges.',
+  path: '/how-it-works',
+});
 
 const STEPS = [
   { n: '1', title: 'Browse & Request', body: 'Find the right vehicle and submit a request to book your dates. No charge is made when you request.' },

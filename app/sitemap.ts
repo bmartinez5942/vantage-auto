@@ -18,6 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE}/faq`,          changeFrequency: 'monthly', priority: 0.5, lastModified: now },
     { url: `${SITE}/contact`,      changeFrequency: 'monthly', priority: 0.5, lastModified: now },
     { url: `${SITE}/policies`,     changeFrequency: 'yearly',  priority: 0.3, lastModified: now },
+    { url: `${SITE}/attributions`, changeFrequency: 'yearly',  priority: 0.1, lastModified: now },
   ];
 
   // Vehicles — best-effort: a fetch failure (e.g. missing env at build time)
