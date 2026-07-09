@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/seo';
 import Link from 'next/link';
 import { AUTO } from '@/lib/branding';
 
-export const metadata: Metadata = {
-  title: 'FAQ — Arrivo',
-  description: 'Answers about booking, deposits, mileage, delivery, eligibility, and how request-to-book works at Arrivo.',
-};
+export const metadata: Metadata = pageMeta({
+  title: 'Miami Car Rental FAQ',
+  description: 'Answers about booking, deposits, mileage, delivery, eligibility, and how request-to-book works when renting a car with Arrivo in Miami.',
+  path: '/faq',
+});
 
 const FAQS = [
   {
@@ -46,9 +48,25 @@ const FAQS = [
   },
 ];
 
+// FAQPage JSON-LD built from the same FAQS array the page renders — keeps
+// the schema and the visible content in lockstep (a Google requirement).
+const FAQ_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQS.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
 export default function FaqPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA) }}
+      />
       <div className="container page-head">
         <div className="eyebrow">FAQ</div>
         <h1 className="page-title">

@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/seo';
 import { SourceForm } from './SourceForm';
 import { IconSearch, IconKey, IconCheck, IconShield } from '@/components/icons';
 
-export const metadata: Metadata = {
-  title: 'Source a Vehicle — Arrivo',
-  description: 'Tell us what you want and we’ll find, vet, and acquire the right vehicle for you.',
-};
+export const metadata: Metadata = pageMeta({
+  title: 'Vehicle Sourcing & Brokerage in Miami',
+  description: 'Tell Arrivo what you want to drive or own — we find, vet, and acquire the right vehicle in Miami, from practical daily drivers to premium builds.',
+  path: '/source',
+});
 
 const STEPS = [
   { n: '1', icon: <IconSearch />, title: 'Brief us', body: 'Share the vehicle, budget, and timeline you have in mind.' },

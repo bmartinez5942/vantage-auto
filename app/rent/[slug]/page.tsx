@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { fetchLiveVehicleBySlug, fetchUnavailableRanges, vehicleName } from '@/lib/liveVehicles';
 import { formatCurrency, formatDate } from '@/lib/format';
 import { IconCheck } from '@/components/icons';
+import { pageMeta, SITE_URL } from '@/lib/seo';
 import { BookingRequestForm } from './BookingRequestForm';
 import { Gallery } from './Gallery';
 
@@ -11,9 +12,17 @@ export const revalidate = 300;
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const v = await fetchLiveVehicleBySlug(params.slug);
-  if (!v) return { title: 'Vehicle — Arrivo' };
+  if (!v) return { title: 'Vehicle' };
   const name = vehicleName(v);
-  return { title: `${name} — Arrivo`, description: v.headline ?? `Request to book the ${name} from Arrivo.` };
+  const rate = v.daily_rate != null ? ` From ${formatCurrency(v.daily_rate)}/day` : '';
+  const firstPhoto = (v.photos ?? []).filter(Boolean)[0];
+  return pageMeta({
+    title: `Rent a ${name} in Miami`,
+    description:
+      `${v.headline ? v.headline + ' ' : ''}Request to book the ${name} with Arrivo in Miami.${rate} — flexible delivery, no charge until confirmed.`.slice(0, 158),
+    path: `/rent/${v.slug ?? v.id}`,
+    ogImage: firstPhoto ? { url: firstPhoto, alt: `${name} for rent in Miami through Arrivo` } : undefined,
+  });
 }
 
 export default async function VehicleDetailPage({ params }: { params: { slug: string } }) {
@@ -37,8 +46,38 @@ export default async function VehicleDetailPage({ params }: { params: { slug: st
   if (v.extra_mileage_fee != null) specs.push({ label: 'Extra mileage', value: `${formatCurrency(v.extra_mileage_fee)}/mi` });
   if (v.deposit_amount != null) specs.push({ label: 'Deposit', value: formatCurrency(v.deposit_amount) });
 
+  // Product + Offer JSON-LD — makes the vehicle eligible for rich results
+  // (price, availability) and gives AI search a structured record.
+  const vehicleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    '@id': `${SITE_URL}/rent/${v.slug ?? v.id}#vehicle`,
+    name: `${name} — rental in Miami`,
+    description: v.headline ?? v.description ?? `Rent the ${name} in Miami through Arrivo.`,
+    image: photos.length > 0 ? photos : undefined,
+    brand: v.make ? { '@type': 'Brand', name: v.make } : undefined,
+    category: v.category ?? 'Vehicle rental',
+    ...(v.daily_rate != null
+      ? {
+          offers: {
+            '@type': 'Offer',
+            url: `${SITE_URL}/rent/${v.slug ?? v.id}`,
+            price: v.daily_rate,
+            priceCurrency: 'USD',
+            availability: 'https://schema.org/InStock',
+            areaServed: { '@type': 'City', name: 'Miami' },
+            seller: { '@id': `${SITE_URL}/#organization` },
+          },
+        }
+      : {}),
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(vehicleSchema) }}
+      />
       <div className="container page-head">
         <Link href="/rent" className="service-card-link" style={{ display: 'inline-flex', marginBottom: 12 }}>← Back to the collection</Link>
         {v.category && <div className="eyebrow">{v.category}</div>}

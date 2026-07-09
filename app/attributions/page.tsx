@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/seo';
 import Link from 'next/link';
 
-export const metadata: Metadata = {
-  title: 'Image Credits — Arrivo',
+export const metadata: Metadata = pageMeta({
+  title: 'Image Credits',
   description: 'Attribution for vehicle photography used on Arrivo.',
-};
+  path: '/attributions',
+});
 
 type Credit = {
   vehicle: string;

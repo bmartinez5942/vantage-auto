@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/seo';
 import { CatalogVehicleCard } from '@/components/CatalogVehicleCard';
 import { LiveVehicleCard } from '@/components/LiveVehicleCard';
 import { FilterRail } from './FilterRail';
@@ -7,10 +8,11 @@ import { groupedCatalog, countCatalog } from '@/lib/autoCatalog';
 import { fetchApprovedPricing } from '@/lib/pricing';
 import { fetchLiveVehicles } from '@/lib/liveVehicles';
 
-export const metadata: Metadata = {
-  title: 'Rent a Vehicle — Arrivo',
-  description: 'Browse the Arrivo collection and request the right vehicle for your stay, trip, or lifestyle.',
-};
+export const metadata: Metadata = pageMeta({
+  title: 'Rent a Car in Miami — The Arrivo Collection',
+  description: 'Browse Arrivo’s Miami rental collection — efficient daily drivers to premium vehicles. Transparent daily rates, request-to-book, delivery available.',
+  path: '/rent',
+});
 
 type SearchParams = {
   cat?: string;
