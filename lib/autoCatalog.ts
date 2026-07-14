@@ -152,6 +152,20 @@ export const featuredAutoCards: AutoVehicleCard[] = [
     status: 'active',
     priorityOrder: 9,
   },
+  {
+    id: 'bmw-x3-2020',
+    make: 'BMW',
+    model: 'X3',
+    trim: 'xDrive30i',
+    minYear: 2020,
+    displayName: '2020+ BMW X3',
+    category: 'premium_daily',
+    bodyStyle: 'suv',
+    imageUrl: '/images/auto/bmw-x3.jpg',
+    altText: 'BMW X3 SUV',
+    status: 'active',
+    priorityOrder: 10,
+  },
 ];
 
 // Human-readable body-style label used on cards.

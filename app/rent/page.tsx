@@ -14,6 +14,10 @@ export const metadata: Metadata = pageMeta({
   path: '/rent',
 });
 
+// Same freshness window as /rent/[slug] — without this, the live-vehicle
+// fetch is cached indefinitely and newly added vehicles never appear.
+export const revalidate = 300;
+
 type SearchParams = {
   cat?: string;
   body?: string;

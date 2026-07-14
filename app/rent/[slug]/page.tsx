@@ -43,7 +43,7 @@ export default async function VehicleDetailPage({ params }: { params: { slug: st
   if (v.mpg != null) specs.push({ label: 'MPG', value: `${v.mpg} mpg` });
   if (v.unlimited_mileage) specs.push({ label: 'Mileage', value: 'Unlimited' });
   else if (v.included_miles_per_day != null) specs.push({ label: 'Miles / day', value: String(v.included_miles_per_day) });
-  if (v.extra_mileage_fee != null) specs.push({ label: 'Extra mileage', value: `${formatCurrency(v.extra_mileage_fee)}/mi` });
+  if (v.extra_mileage_fee != null) specs.push({ label: 'Extra mileage', value: `${formatCurrency(v.extra_mileage_fee, { cents: true })}/mi` });
   if (v.deposit_amount != null) specs.push({ label: 'Deposit', value: formatCurrency(v.deposit_amount) });
 
   // Product + Offer JSON-LD — makes the vehicle eligible for rich results
