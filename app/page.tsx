@@ -87,14 +87,29 @@ export default async function HomePage() {
       {/* HERO */}
       <section className="va-hero">
         <div className="va-hero-content">
-          <h1>Your Stay,<br />Now in Motion.</h1>
+          <span className="va-hero-eyebrow">The right vehicle,</span>
+          <h1><span className="va-hero-accent">Ready When</span><br />You Arrive</h1>
           <p>
-            From practical daily drivers to premium vehicles, {BRAND} makes it simple to book the right car
-            for your stay, trip, or lifestyle.
+            Premium car rentals for your stay, trip, or lifestyle — luxury, performance, and everyday
+            comfort, delivered with {BRAND}.
           </p>
+          <div className="va-hero-stats">
+            <div>
+              <span className="va-hstat-k">Daily rates from</span>
+              <span className="va-hstat-v"><span className="va-hstat-em">$55</span> / day</span>
+            </div>
+            <div>
+              <span className="va-hstat-k">Delivery</span>
+              <span className="va-hstat-v">Available in Miami</span>
+            </div>
+            <div>
+              <span className="va-hstat-k">Every vehicle</span>
+              <span className="va-hstat-v">Verified &amp; documented</span>
+            </div>
+          </div>
           <div className="va-hero-actions">
-            <Link href="/rent" className="va-primary-button">Rent a Vehicle</Link>
-            <Link href="/host" className="va-secondary-button">List Your Vehicle</Link>
+            <Link href="/rent" className="va-primary-button">Browse Vehicles</Link>
+            <Link href="/how-it-works" className="va-secondary-button">How It Works</Link>
           </div>
         </div>
       </section>
