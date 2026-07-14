@@ -923,3 +923,96 @@ html.va-light .va-secondary-button:hover { border-color: var(--va-sage-deep); co
   .va-hero-stats { gap: 14px 26px; margin-top: 26px; }
   .va-hstat-v { font-size: 15px; }
 }
+
+/* ═════════════ MOBILE HERO — vehicle-first (product leads the first screen) ═════════════
+   Desktop reflowed vertically put the car below the buttons behind a black void.
+   On mobile the hero is now: media band (the Range Rover, immediately visible) →
+   headline → subhead → stats → CTAs → search. The band uses one neutral crop
+   (hero-mobile.jpg) graded per theme with CSS filters, and its scrim dissolves
+   into the page background so there is no hard seam. Desktop is untouched. */
+.va-hero-media { display: none; }
+
+@media (max-width: 768px) {
+  /* Drop the desktop background image and fall back to the page surface —
+     `none` would expose the always-black <body> and break light theme. */
+  html.va-dark .va-hero,
+  html.va-light .va-hero {
+    display: block;
+    min-height: 0;
+    padding: 0 0 20px;
+    align-items: initial;
+  }
+  html.va-dark  .va-hero { background: var(--va-black); }
+  html.va-light .va-hero { background: var(--va-ivory); }
+
+  /* ── The vehicle band ── */
+  /* Band is kept WIDER than the image's 1.23 ratio so `cover` crops the spare
+     sky/ground vertically — never the vehicle horizontally. */
+  .va-hero-media {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 38vh;
+    min-height: 285px;
+    max-height: 400px;
+    overflow: hidden;
+  }
+  .va-hero-media::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('/images/hero-mobile.jpg') center center / cover no-repeat;
+    transform: scale(1.03);
+  }
+  /* Vehicle stays the focal point — light grade, never crushed to black. */
+  html.va-dark  .va-hero-media::before { filter: brightness(0.88) contrast(1.05) saturate(1.05); }
+  html.va-light .va-hero-media::before { filter: brightness(1.03) contrast(1.02) saturate(1.04); }
+  /* Scrim: soft at the top, clear over the car, dissolving into the page bg. */
+  .va-hero-media::after { content: ''; position: absolute; inset: 0; }
+  html.va-dark .va-hero-media::after {
+    background: linear-gradient(180deg,
+      rgba(0,0,0,0.34) 0%, rgba(0,0,0,0.06) 30%,
+      rgba(0,0,0,0.10) 66%, rgba(8,9,9,0.88) 94%, #080909 100%);
+  }
+  html.va-light .va-hero-media::after {
+    background: linear-gradient(180deg,
+      rgba(248,244,237,0.30) 0%, rgba(248,244,237,0.04) 32%,
+      rgba(248,244,237,0.18) 68%, rgba(248,244,237,0.90) 94%, var(--va-ivory) 100%);
+  }
+
+  /* ── Content below the vehicle ── */
+  .va-hero-content { max-width: none; padding: 2px 20px 0; }
+  .va-hero-eyebrow { margin-bottom: 8px; }
+  .va-hero h1 {
+    font-size: clamp(2.8rem, 9vw, 4rem);
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    max-width: 5.5ch;               /* breaks to Ready / When / You / Arrive */
+    margin: 0 0 12px;
+  }
+  .va-hero p { font-size: 15px; line-height: 1.5; margin: 0; max-width: 100%; }
+
+  .va-hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 16px 0 18px;
+    padding-top: 14px;
+  }
+  .va-hstat-k { font-size: 9px; letter-spacing: 0.12em; line-height: 1.3; }
+  .va-hstat-v { font-size: 13px; font-weight: 700; }
+
+  .va-hero-actions { display: grid; grid-template-columns: 1fr; gap: 16px; width: 100%; }
+  .va-hero-actions a,
+  .va-hero-actions .va-primary-button,
+  .va-hero-actions .va-secondary-button {
+    width: 100%;
+    padding: 18px;
+    border-radius: 14px;
+    text-align: center;
+    min-height: 0;
+  }
+
+  /* Search sits below the hero — no negative overlap now that nothing hides the car. */
+  .va-search-wrap { margin-top: 18px; padding: 0 20px 14px; position: relative; z-index: 5; }
+}

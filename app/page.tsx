@@ -86,6 +86,9 @@ export default async function HomePage() {
     <div className="va-page">
       {/* HERO */}
       <section className="va-hero">
+        {/* Mobile-only hero band: the vehicle leads the first screen. Hidden on
+            desktop, where .va-hero's own background image is the hero. */}
+        <div className="va-hero-media" aria-hidden="true" />
         <div className="va-hero-content">
           <span className="va-hero-eyebrow">The right vehicle,</span>
           <h1><span className="va-hero-accent">Ready When</span><br />You Arrive</h1>
