@@ -12,7 +12,7 @@ import { formatCurrency } from '@/lib/format';
  *  first photo if the thumb doesn't exist for a vehicle.
  *  The ?v tag busts the long-lived browser/CDN cache when a thumb is
  *  re-encoded — bump it whenever card.jpg files are regenerated. */
-const CARD_THUMB_VERSION = '3';
+const CARD_THUMB_VERSION = '4';
 function cardThumbUrl(photo: string): string {
   return photo.replace(/\/[^/]+$/, `/card.jpg?v=${CARD_THUMB_VERSION}`);
 }
