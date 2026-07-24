@@ -2,6 +2,14 @@
 
 import { useCallback, useEffect, useState } from 'react';
 
+// Gallery originals were re-encoded from progressive to baseline JPEG (progressive
+// showed a blocky first-paint in the full-screen lightbox — "opens pixelated").
+// Bump this to bust the 1-year browser/CDN cache when photos are re-encoded.
+const GALLERY_IMG_VERSION = '2';
+function srcOf(url: string): string {
+  return url + (url.includes('?') ? '&' : '?') + 'c=' + GALLERY_IMG_VERSION;
+}
+
 /**
  * Interactive vehicle gallery. Clicking any thumbnail swaps the main image;
  * clicking the main image opens a full-screen lightbox with prev/next + keyboard
@@ -60,7 +68,7 @@ export function Gallery({ photos, name }: { photos: string[]; name: string }) {
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={imgs[safe]} alt={`${name} available for rent in Miami through Arrivo — photo ${safe + 1} of ${imgs.length}`} />
+        <img src={srcOf(imgs[safe])} alt={`${name} available for rent in Miami through Arrivo — photo ${safe + 1} of ${imgs.length}`} />
       </div>
 
       {imgs.length > 1 && (
@@ -75,7 +83,7 @@ export function Gallery({ photos, name }: { photos: string[]; name: string }) {
               aria-current={i === safe}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={p} alt="" loading="lazy" />
+              <img src={srcOf(p)} alt="" loading="lazy" />
             </button>
           ))}
         </div>
@@ -100,7 +108,7 @@ export function Gallery({ photos, name }: { photos: string[]; name: string }) {
             </button>
           )}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={imgs[safe]} alt={`${name} — photo ${safe + 1}`} onClick={(e) => e.stopPropagation()} />
+          <img src={srcOf(imgs[safe])} alt={`${name} — photo ${safe + 1}`} onClick={(e) => e.stopPropagation()} />
           {imgs.length > 1 && (
             <button
               type="button"
