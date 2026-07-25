@@ -59,13 +59,18 @@ export async function submitVehicleBooking(_prev: FormResult, formData: FormData
   // Only approved, live vehicles are bookable. Pricing comes from the row.
   const { data: veh, error: vErr } = await sb
     .from('vehicles')
-    .select('id, daily_rate, deposit_amount, listing_status, approved_by_admin, min_rental_days, max_rental_days')
+    .select('id, year, make, model, slug, daily_rate, deposit_amount, listing_status, approved_by_admin, min_rental_days, max_rental_days')
     .eq('id', v.vehicleId)
     .maybeSingle();
   if (vErr || !veh || (veh as { listing_status?: string }).listing_status !== 'live' || !(veh as { approved_by_admin?: boolean }).approved_by_admin) {
     return { ok: false, error: 'This vehicle is not available to book.' };
   }
-  const row = veh as { daily_rate: number | null; deposit_amount: number | null; min_rental_days: number | null; max_rental_days: number | null };
+  const row = veh as {
+    year: number | null; make: string | null; model: string | null; slug: string | null;
+    daily_rate: number | null; deposit_amount: number | null; min_rental_days: number | null; max_rental_days: number | null;
+  };
+  // Readable vehicle name for the notification (email showed a raw UUID before).
+  const vehicleName = [row.year, row.make, row.model].filter(Boolean).join(' ') || 'Vehicle';
   const days = daysBetween(v.pickup, v.ret);
   const min = row.min_rental_days ?? 1;
   const max = row.max_rental_days ?? null;
@@ -98,8 +103,10 @@ export async function submitVehicleBooking(_prev: FormResult, formData: FormData
     return { ok: false, error: 'Something went wrong submitting your request. Please try again.' };
   }
   await notifyInquiry(
-    `New booking request — ${v.name}`,
+    `New booking request — ${vehicleName} — ${v.name}`,
     {
+      Vehicle: vehicleName,
+      Listing: row.slug ? `https://bearrivo.com/rent/${row.slug}` : '',
       Name: v.name,
       Email: v.email,
       Phone: v.phone,
@@ -107,7 +114,6 @@ export async function submitVehicleBooking(_prev: FormResult, formData: FormData
       Return: v.ret,
       Days: days,
       'Est. total': gross ? `$${gross}` : '—',
-      'Vehicle ID': v.vehicleId,
       Notes: v.notes || '',
     },
     v.email,
