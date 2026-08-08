@@ -4,60 +4,66 @@
    token set; [data-theme="light"] overrides the palette. Default dark.
    ============================================================ */
 
+/* 2026-08-08 harmonized with the Auren quiet-luxury system (same
+   family as command.aurengroup.us + vantagestays.miami): warm
+   near-black instead of blue-black, champagne accent, calmer text. */
 :root,
 [data-theme='dark'] {
-  --bg:        #121214;
-  --bg-2:      #18181b;
-  --bg-3:      #1f1f24;
-  --bg-elev:   #1c1c21;
-  --hairline:  #2c2c32;
-  --hairline-soft: #232328;
-  --text:      #ece6d8;
-  --text-dim:  #9a948a;
-  --text-faint:#6a655d;
-  --gold:      #d4ad6e;
-  --gold-soft: #c2994f;
-  --on-gold:   #1a1710;
-  --good:      #8aa890;
-  --bad:       #c2747c;
-  --card:      #18181b;
+  --bg:        #131311;
+  --bg-2:      #191916;
+  --bg-3:      #21211d;
+  --bg-elev:   #1e1e1a;
+  --hairline:  #302f2a;
+  --hairline-soft: #26251f;
+  --text:      #f1eee7;
+  --text-dim:  #aaa498;
+  --text-faint:#817d74;
+  --gold:      #c1a36a;
+  --gold-soft: #d0b57e;
+  --on-gold:   #171714;
+  --good:      #7fa18a;
+  --bad:       #c7797b;
+  --card:      #191916;
   --card-border: rgba(255,255,255,0.06);
-  --input-bg:  #1c1c21;
-  --input-border: #2f2f36;
-  --shadow-card: 0 24px 60px -28px rgba(0,0,0,0.6);
-  --shadow-soft: 0 10px 30px -18px rgba(0,0,0,0.5);
-  --hero-scrim: linear-gradient(90deg, rgba(8,8,11,0.94) 0%, rgba(8,8,11,0.70) 40%, rgba(8,8,11,0.20) 76%, rgba(8,8,11,0.04) 100%);
-  --hero-text: #f4eee0;
-  --hero-sub: rgba(240,234,220,0.86);
-  --glow: rgba(212,173,110,0.06);
+  --input-bg:  #1e1e1a;
+  --input-border: #34332d;
+  --shadow-card: 0 24px 60px -28px rgba(0,0,0,0.55);
+  --shadow-soft: 0 10px 30px -18px rgba(0,0,0,0.45);
+  --hero-scrim: linear-gradient(90deg, rgba(10,10,8,0.94) 0%, rgba(10,10,8,0.70) 40%, rgba(10,10,8,0.20) 76%, rgba(10,10,8,0.04) 100%);
+  --hero-text: #f1eee7;
+  --hero-sub: rgba(241,238,231,0.86);
+  --glow: rgba(193,163,106,0.06);
   color-scheme: dark;
 }
 
+/* Ivory ramp from the shared system. Gold renders as LINK/CTA text
+   here, so it uses the darker champagne #8f7445 (≈4.5:1 on ivory,
+   WCAG AA) — same decision as vantagestays.miami. */
 [data-theme='light'] {
-  --bg:        #f6f1e8;
-  --bg-2:      #ffffff;
-  --bg-3:      #fbf7ef;
+  --bg:        #f5f2eb;
+  --bg-2:      #fcfbf8;
+  --bg-3:      #f1ede5;
   --bg-elev:   #ffffff;
-  --hairline:  #e7ddcb;
-  --hairline-soft: #efe8da;
-  --text:      #211d15;
-  --text-dim:  #6c655a;
-  --text-faint:#9b9385;
-  --gold:      #b0863c;
-  --gold-soft: #9a7434;
+  --hairline:  #e3ded4;
+  --hairline-soft: #ebe6db;
+  --text:      #1d1d1b;
+  --text-dim:  #69655e;
+  --text-faint:#8b867d;
+  --gold:      #8f7445;
+  --gold-soft: #7a6238;
   --on-gold:   #ffffff;
-  --good:      #4f7a5b;
-  --bad:       #b1545c;
-  --card:      #ffffff;
-  --card-border: rgba(33,29,21,0.07);
+  --good:      #587663;
+  --bad:       #9d5658;
+  --card:      #fcfbf8;
+  --card-border: rgba(29,29,27,0.07);
   --input-bg:  #ffffff;
-  --input-border: #e2d8c6;
-  --shadow-card: 0 24px 60px -30px rgba(80,60,25,0.22);
-  --shadow-soft: 0 12px 30px -20px rgba(80,60,25,0.18);
-  --hero-scrim: linear-gradient(90deg, rgba(247,243,236,0.97) 0%, rgba(247,243,236,0.82) 42%, rgba(247,243,236,0.24) 78%, rgba(247,243,236,0.0) 100%);
-  --hero-text: #1f1a12;
-  --hero-sub: rgba(31,26,18,0.74);
-  --glow: rgba(176,134,60,0.05);
+  --input-border: #d4ccbe;
+  --shadow-card: 0 20px 52px -30px rgba(29,29,27,0.16);
+  --shadow-soft: 0 12px 30px -22px rgba(29,29,27,0.12);
+  --hero-scrim: linear-gradient(90deg, rgba(245,242,235,0.97) 0%, rgba(245,242,235,0.82) 42%, rgba(245,242,235,0.24) 78%, rgba(245,242,235,0.0) 100%);
+  --hero-text: #1d1d1b;
+  --hero-sub: rgba(29,29,27,0.74);
+  --glow: rgba(164,135,82,0.05);
   color-scheme: light;
 }
 
