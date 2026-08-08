@@ -108,7 +108,17 @@ export function Gallery({ photos, name }: { photos: string[]; name: string }) {
             </button>
           )}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={srcOf(imgs[safe])} alt={`${name} — photo ${safe + 1}`} onClick={(e) => e.stopPropagation()} />
+          <img
+            src={srcOf(imgs[safe])}
+            alt={`${name} — photo ${safe + 1}`}
+            onClick={(e) => e.stopPropagation()}
+            // Photos are ~1448px sources; letting the lightbox stretch them to
+            // 96vw on retina is what pixelates. Cap at native width per photo.
+            onLoad={(e) => {
+              const el = e.currentTarget;
+              if (el.naturalWidth > 0) el.style.setProperty('--photo-native-w', `${el.naturalWidth}px`);
+            }}
+          />
           {imgs.length > 1 && (
             <button
               type="button"
