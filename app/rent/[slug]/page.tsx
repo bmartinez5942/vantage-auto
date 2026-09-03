@@ -78,11 +78,11 @@ export default async function VehicleDetailPage({ params }: { params: { slug: st
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(vehicleSchema) }}
       />
-      <div className="container page-head">
-        <Link href="/rent" className="service-card-link" style={{ display: 'inline-flex', marginBottom: 12 }}>← Back to the collection</Link>
+      <div className="container page-head vehicle-head">
+        <Link href="/rent" className="service-card-link back-link">← Back to the collection</Link>
         {v.category && <div className="eyebrow">{v.category}</div>}
-        <h1 className="page-title">{name}</h1>
-        {v.headline && <p className="section-sub">{v.headline}</p>}
+        <h1 className="page-title vehicle-title">{name}</h1>
+        {v.headline && <p className="section-sub vehicle-sub">{v.headline}</p>}
       </div>
 
       <section className="section-tight">
