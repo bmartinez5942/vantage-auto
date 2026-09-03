@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 // Gallery originals were re-encoded from progressive to baseline JPEG (progressive
 // showed a blocky first-paint in the full-screen lightbox — "opens pixelated").
 // Bump this to bust the 1-year browser/CDN cache when photos are re-encoded.
-const GALLERY_IMG_VERSION = '2';
+const GALLERY_IMG_VERSION = '3';
 function srcOf(url: string): string {
   return url + (url.includes('?') ? '&' : '?') + 'c=' + GALLERY_IMG_VERSION;
 }
