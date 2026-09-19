@@ -1075,3 +1075,65 @@ html.va-light .va-secondary-button:hover { border-color: var(--va-sage-deep); co
   .va-hero-actions a { padding: 12px 20px; border-radius: 12px; width: auto; }
   .va-search-wrap { margin-top: 14px; }
 }
+
+/* ── Protection, Mileage & Rental Details (2026-09-19) ─────────────────── */
+.rd-intro { max-width: 720px; line-height: 1.7; }
+.plan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 18px 0 4px; }
+@media (max-width: 900px) { .plan-grid { grid-template-columns: 1fr; } }
+.plan-card {
+  position: relative; display: flex; flex-direction: column; gap: 10px; text-align: left;
+  background: var(--card); border: 1px solid var(--card-border); border-radius: 14px;
+  padding: 40px 18px 18px; cursor: pointer; font: inherit; color: var(--text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.plan-card:hover { border-color: color-mix(in srgb, var(--gold) 45%, transparent); }
+.plan-card.is-selected {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold), var(--shadow-card);
+}
+.plan-badge {
+  position: absolute; top: 12px; left: 18px; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--va-sage-deep);
+  background: color-mix(in srgb, var(--va-sage) 22%, transparent);
+  border: 1px solid color-mix(in srgb, var(--va-sage) 45%, transparent);
+  padding: 3px 9px; border-radius: 999px;
+}
+html.va-dark .plan-badge { color: var(--va-sage); }
+.plan-title { font-weight: 600; font-size: 16px; letter-spacing: 0.01em; }
+.plan-price { color: var(--gold); font-weight: 600; font-size: 15px; }
+.plan-per { color: var(--text-dim); font-weight: 400; font-size: 12px; }
+.plan-total { color: var(--text-dim); font-weight: 500; font-size: 12px; }
+.plan-copy { font-size: 13px; line-height: 1.6; color: var(--text-dim); }
+.plan-meta { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--text-dim); border-top: 1px solid var(--card-border); padding-top: 10px; margin-top: auto; }
+.plan-meta strong { color: var(--text); font-weight: 600; }
+.plan-warning {
+  margin-top: 12px; padding: 12px 14px; border-radius: 9px; font-size: 13px; line-height: 1.6;
+  color: var(--bad); background: color-mix(in srgb, var(--bad) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--bad) 38%, transparent);
+}
+.rd-block { margin-top: 22px; max-width: 720px; }
+.rd-block .muted { line-height: 1.7; }
+.rd-h { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.rd-highlight {
+  background: color-mix(in srgb, var(--va-sage) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--va-sage) 35%, transparent);
+  border-radius: 12px; padding: 16px 18px;
+}
+
+/* Booking rail additions */
+.rail-choice { font-size: 14px; color: var(--text); padding: 9px 12px; border: 1px solid var(--card-border); border-radius: 9px; background: color-mix(in srgb, var(--gold) 8%, transparent); }
+.rail-change { background: none; border: none; color: var(--gold); font-size: 12px; cursor: pointer; margin-left: 8px; text-decoration: underline; padding: 0; }
+.rail-unchosen { font-size: 13px; color: var(--text-dim); line-height: 1.6; padding: 9px 12px; border: 1px dashed var(--card-border); border-radius: 9px; }
+.rail-unchosen a { color: var(--gold); }
+.addl-driver { border-left: 2px solid color-mix(in srgb, var(--gold) 40%, transparent); padding-left: 14px; margin: 4px 0 8px; }
+.check-line { display: flex; gap: 9px; align-items: flex-start; font-size: 13px; line-height: 1.55; color: var(--text-dim); cursor: pointer; }
+.check-line input { margin-top: 3px; accent-color: var(--gold); flex-shrink: 0; }
+.ack-list { display: flex; flex-direction: column; gap: 9px; margin: 16px 0; padding-top: 14px; border-top: 1px solid var(--card-border); }
+.price-summary { border: 1px solid var(--card-border); border-radius: 12px; padding: 14px 16px; margin-top: 4px; background: color-mix(in srgb, var(--gold) 4%, transparent); }
+.ps-row { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--text-dim); padding: 3px 0; }
+.ps-row span:last-child { color: var(--text); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ps-total { border-top: 1px solid var(--card-border); margin-top: 8px; padding-top: 10px; font-weight: 700; font-size: 15px; }
+.ps-total span { color: var(--text) !important; }
+.ps-hold { display: flex; flex-direction: column; gap: 3px; margin-top: 12px; padding: 10px 12px; border-radius: 9px; background: color-mix(in srgb, var(--va-sage) 12%, transparent); border: 1px solid color-mix(in srgb, var(--va-sage) 35%, transparent); font-size: 12px; color: var(--text-dim); }
+.ps-hold strong { font-size: 15px; color: var(--text); }
+.ps-hold em { font-style: italic; font-size: 11px; line-height: 1.5; }

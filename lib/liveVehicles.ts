@@ -32,16 +32,21 @@ export type LiveVehicle = {
   min_rental_days: number | null;
   max_rental_days: number | null;
   included_miles_per_day: number | null;
+  included_miles_per_week: number | null;
   extra_mileage_fee: number | null;
   unlimited_mileage: boolean | null;
   is_featured: boolean | null;
+  // Migration 148 — per-vehicle rental-term overrides (see lib/rentalTerms.ts)
+  rental_overrides: Record<string, unknown> | null;
+  protection_disabled_plans: string[] | null;
 };
 
 const FIELDS =
   'id, slug, make, model, year, trim, category, seats, doors, transmission, fuel_type, mpg, headline, ' +
   'description, features, photos, city, daily_rate, weekly_rate, monthly_rate, deposit_amount, ' +
   'delivery_available, delivery_fee, min_rental_days, max_rental_days, included_miles_per_day, ' +
-  'extra_mileage_fee, unlimited_mileage, is_featured';
+  'included_miles_per_week, extra_mileage_fee, unlimited_mileage, is_featured, ' +
+  'rental_overrides, protection_disabled_plans';
 
 export function vehicleName(v: Pick<LiveVehicle, 'year' | 'make' | 'model'>): string {
   return [v.year, v.make, v.model].filter(Boolean).join(' ').trim() || 'Vehicle';

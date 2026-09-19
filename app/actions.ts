@@ -126,6 +126,214 @@ export async function submitVehicleBooking(_prev: FormResult, formData: FormData
   };
 }
 
+// ========================= RENTAL CHECKOUT REQUEST =========================
+// The full protection/mileage/delivery flow (2026-09-19). Still request-to-
+// book: nothing is charged and nothing auto-confirms. The quote is recomputed
+// HERE from admin data (arrivo_rental_settings + the vehicle row) — client
+// numbers are display-only. The authorization hold is stored separately and
+// is never part of the amount due.
+import {
+  settingsFromRow, resolveTerms, quoteRental, planViews, type ProtectionPlanId,
+} from '@/lib/rentalTerms';
+
+const checkoutSchema = bookingSchema.extend({
+  plan: z.enum(['none', 'standard', 'premium'], { errorMap: () => ({ message: 'Select a protection option — Standard, Premium or Decline.' }) }),
+  deliveryId: z.string().uuid().optional().or(z.literal('')),
+  additionalDriver: z.boolean(),
+  adName: z.string().trim().max(120).optional(),
+  adDob: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().or(z.literal('')),
+  adLicenseCountry: z.string().trim().max(80).optional(),
+  adLicenseNumber: z.string().trim().max(60).optional(),
+  adLicenseExpiry: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().or(z.literal('')),
+  adPassport: z.string().trim().max(60).optional(),
+});
+
+const ACK_KEYS = [
+  'ack_mileage', 'ack_drivers', 'ack_protection', 'ack_hold_limit', 'ack_hold_authorize', 'ack_agreement',
+] as const;
+
+export async function submitRentalCheckout(_prev: FormResult, formData: FormData): Promise<FormResult> {
+  if (trapped(formData)) return { ok: true, message: 'Request received.' };
+
+  const parsed = checkoutSchema.safeParse({
+    vehicleId: formData.get('vehicleId'),
+    pickup: formData.get('pickup'),
+    ret: formData.get('ret'),
+    name: formData.get('name'),
+    email: formData.get('email'),
+    phone: formData.get('phone'),
+    notes: (formData.get('notes') as string) || undefined,
+    plan: formData.get('plan') || undefined,
+    deliveryId: (formData.get('deliveryId') as string) || '',
+    additionalDriver: formData.get('additionalDriver') === 'on',
+    adName: (formData.get('adName') as string) || undefined,
+    adDob: (formData.get('adDob') as string) || '',
+    adLicenseCountry: (formData.get('adLicenseCountry') as string) || undefined,
+    adLicenseNumber: (formData.get('adLicenseNumber') as string) || undefined,
+    adLicenseExpiry: (formData.get('adLicenseExpiry') as string) || '',
+    adPassport: (formData.get('adPassport') as string) || undefined,
+  });
+  if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? 'Please check the form.' };
+  const v = parsed.data;
+  if (v.ret <= v.pickup) return { ok: false, error: 'Return date must be after pick-up.' };
+
+  // Every disclosure must be actively acknowledged.
+  for (const k of ACK_KEYS) {
+    if (formData.get(k) !== 'on') {
+      return { ok: false, error: 'Please review and check every acknowledgment before submitting.' };
+    }
+  }
+  if (v.additionalDriver && (!v.adName || !v.adDob || !v.adLicenseCountry || !v.adLicenseNumber || !v.adLicenseExpiry)) {
+    return { ok: false, error: "Complete the additional driver's name, date of birth and license details." };
+  }
+
+  const sb = serverClient();
+  const { data: veh, error: vErr } = await sb
+    .from('vehicles')
+    .select(
+      'id, year, make, model, slug, daily_rate, weekly_rate, listing_status, approved_by_admin, ' +
+        'min_rental_days, max_rental_days, included_miles_per_day, included_miles_per_week, ' +
+        'extra_mileage_fee, unlimited_mileage, rental_overrides, protection_disabled_plans',
+    )
+    .eq('id', v.vehicleId)
+    .maybeSingle();
+  if (vErr || !veh || (veh as { listing_status?: string }).listing_status !== 'live' || !(veh as { approved_by_admin?: boolean }).approved_by_admin) {
+    return { ok: false, error: 'This vehicle is not available to book.' };
+  }
+  const row = veh as unknown as {
+    year: number | null; make: string | null; model: string | null; slug: string | null;
+    daily_rate: number | null; weekly_rate: number | null;
+    min_rental_days: number | null; max_rental_days: number | null;
+    included_miles_per_day: number | null; included_miles_per_week: number | null;
+    extra_mileage_fee: number | null; unlimited_mileage: boolean | null;
+    rental_overrides: Record<string, unknown> | null; protection_disabled_plans: string[] | null;
+  };
+
+  const days = daysBetween(v.pickup, v.ret);
+  const min = row.min_rental_days ?? 1;
+  const max = row.max_rental_days ?? null;
+  if (days < min) return { ok: false, error: `Minimum rental is ${min} day${min > 1 ? 's' : ''}.` };
+  if (max && days > max) return { ok: false, error: `Maximum rental is ${max} days.` };
+
+  // Admin config (service client — same values the anon site reads).
+  const { data: sRow } = await sb.from('arrivo_rental_settings').select('*').eq('id', true).maybeSingle();
+  const settings = settingsFromRow(sRow as Record<string, unknown> | null);
+  const terms = resolveTerms(row, settings);
+
+  if (terms.disabled_plans.includes(v.plan as ProtectionPlanId)) {
+    return { ok: false, error: 'That protection option is not offered for this vehicle.' };
+  }
+
+  // Delivery selection — must be an active, eligible location for this vehicle.
+  let deliveryLabel = 'Pickup at Arrivo handoff location';
+  let deliveryFee = 0;
+  let deliveryLocationId: string | null = null;
+  if (v.deliveryId) {
+    const { data: loc } = await sb
+      .from('arrivo_delivery_locations')
+      .select('id, vehicle_id, name, fee, min_rental_days, active')
+      .eq('id', v.deliveryId)
+      .maybeSingle();
+    const l = loc as { id: string; vehicle_id: string | null; name: string; fee: number; min_rental_days: number | null; active: boolean } | null;
+    if (!l || !l.active || (l.vehicle_id && l.vehicle_id !== v.vehicleId)) {
+      return { ok: false, error: 'That delivery option is not available.' };
+    }
+    if (l.min_rental_days != null && days < l.min_rental_days) {
+      return { ok: false, error: `${l.name} delivery requires a rental of ${l.min_rental_days}+ days.` };
+    }
+    deliveryLabel = l.name;
+    deliveryFee = Number(l.fee) || 0;
+    deliveryLocationId = l.id;
+  }
+
+  const quote = quoteRental({ days, terms, plan: v.plan, additionalDriver: v.additionalDriver, deliveryFee });
+  const planTitle = planViews(days, terms).find((p) => p.id === v.plan)?.title ?? v.plan;
+  const vehicleLabel = [row.year, row.make, row.model].filter(Boolean).join(' ') || 'Vehicle';
+
+  const additionalDriverInfo = v.additionalDriver
+    ? {
+        name: v.adName, dob: v.adDob, license_country: v.adLicenseCountry,
+        license_number: v.adLicenseNumber, license_expiry: v.adLicenseExpiry,
+        passport: v.adPassport || null,
+      }
+    : null;
+
+  const { error: insErr } = await sb.from('vehicle_bookings').insert({
+    vehicle_id: v.vehicleId,
+    customer_name: v.name,
+    customer_email: v.email,
+    customer_phone: v.phone,
+    start_date: v.pickup,
+    end_date: v.ret,
+    daily_rate: terms.daily_rate || null,
+    gross_amount: quote.base || null,
+    total_amount: quote.dueToday || null,
+    amount_paid: 0,
+    balance_due: quote.dueToday || null,
+    booking_status: 'pending_verification',
+    payment_status: 'unpaid',
+    booking_source: 'website',
+    internal_notes: v.notes || null,
+    pickup_location: deliveryLabel,
+    protection_plan: v.plan,
+    protection_amount: quote.protection,
+    protection_hold: quote.hold,
+    additional_driver: v.additionalDriver,
+    additional_driver_amount: quote.additionalDriver || null,
+    additional_driver_info: additionalDriverInfo,
+    delivery_location_id: deliveryLocationId,
+    delivery_location_label: deliveryLabel,
+    delivery_fee: deliveryFee,
+    included_miles: quote.includedMiles,
+    excess_mileage_rate: quote.excessRate,
+    tax_amount: quote.tax || null,
+    price_breakdown: {
+      days, base: quote.base, protection: quote.protection, additional_driver: quote.additionalDriver,
+      delivery: quote.delivery, tax: quote.tax, surcharges: quote.surchargeLines,
+      due_today: quote.dueToday, authorization_hold: quote.hold, plan: v.plan,
+    },
+    acknowledgments: {
+      ...Object.fromEntries(ACK_KEYS.map((k) => [k, true])),
+      accepted_at: new Date().toISOString(),
+    },
+  });
+  if (insErr) {
+    console.error('submitRentalCheckout insert:', insErr.message);
+    return { ok: false, error: 'Something went wrong submitting your request. Please try again.' };
+  }
+
+  await notifyInquiry(
+    `New booking request — ${vehicleLabel} — ${v.name}`,
+    {
+      Vehicle: vehicleLabel,
+      Listing: row.slug ? `https://bearrivo.com/rent/${row.slug}` : '',
+      Name: v.name,
+      Email: v.email,
+      Phone: v.phone,
+      'Pick-up': v.pickup,
+      Return: v.ret,
+      Days: days,
+      Protection: `${planTitle} — $${quote.protection}`,
+      'Authorization hold at delivery': `$${quote.hold}`,
+      'Additional driver': v.additionalDriver ? `Yes — $${quote.additionalDriver} (${v.adName})` : 'No',
+      Delivery: `${deliveryLabel}${deliveryFee ? ` — $${deliveryFee}` : ' — free'}`,
+      'Included miles': quote.includedMiles != null ? `${quote.includedMiles} mi ($${quote.excessRate}/mi after)` : 'Unlimited',
+      Taxes: `$${quote.tax}`,
+      'Amount due today': `$${quote.dueToday}`,
+      Notes: v.notes || '',
+    },
+    v.email,
+  );
+
+  return {
+    ok: true,
+    message:
+      'Request received. Your booking is pending verification — we confirm availability, your license and ' +
+      'eligibility, then send secure payment and document-upload links by email to finalize. No charge has been ' +
+      'made, and the temporary authorization is only placed at vehicle delivery.',
+  };
+}
+
 // ============================ HOST SUBMISSION ============================
 const num = (v: FormDataEntryValue | null) => {
   const n = parseFloat(String(v ?? '').replace(/[^0-9.]/g, ''));

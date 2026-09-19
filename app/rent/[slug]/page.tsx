@@ -5,7 +5,8 @@ import { fetchLiveVehicleBySlug, fetchUnavailableRanges, vehicleName } from '@/l
 import { formatCurrency, formatDate } from '@/lib/format';
 import { IconCheck } from '@/components/icons';
 import { pageMeta, SITE_URL } from '@/lib/seo';
-import { BookingRequestForm } from './BookingRequestForm';
+import { fetchRentalSettings, fetchDeliveryLocations, resolveTerms } from '@/lib/rentalTerms';
+import { RentalBooking } from './RentalBooking';
 import { Gallery } from './Gallery';
 
 export const revalidate = 300;
@@ -31,7 +32,12 @@ export default async function VehicleDetailPage({ params }: { params: { slug: st
 
   const name = vehicleName(v);
   const photos = (v.photos ?? []).filter(Boolean);
-  const unavailable = await fetchUnavailableRanges(v.id);
+  const [unavailable, settings, locations] = await Promise.all([
+    fetchUnavailableRanges(v.id),
+    fetchRentalSettings(),
+    fetchDeliveryLocations(v.id),
+  ]);
+  const terms = resolveTerms(v, settings);
 
   const specs: { label: string; value: string }[] = [];
   if (v.category) specs.push({ label: 'Category', value: v.category });
@@ -44,7 +50,6 @@ export default async function VehicleDetailPage({ params }: { params: { slug: st
   if (v.unlimited_mileage) specs.push({ label: 'Mileage', value: 'Unlimited' });
   else if (v.included_miles_per_day != null) specs.push({ label: 'Miles / day', value: String(v.included_miles_per_day) });
   if (v.extra_mileage_fee != null) specs.push({ label: 'Extra mileage', value: `${formatCurrency(v.extra_mileage_fee, { cents: true })}/mi` });
-  if (v.deposit_amount != null) specs.push({ label: 'Deposit', value: formatCurrency(v.deposit_amount) });
 
   // Product + Offer JSON-LD — makes the vehicle eligible for rich results
   // (price, availability) and gives AI search a structured record.
@@ -87,8 +92,13 @@ export default async function VehicleDetailPage({ params }: { params: { slug: st
 
       <section className="section-tight">
         <div className="container">
-          <div className="detail-layout">
-            <div>
+          <RentalBooking
+            vehicleId={v.id}
+            terms={terms}
+            locations={locations}
+            minDays={v.min_rental_days ?? 1}
+            maxDays={v.max_rental_days ?? null}
+          >
               <Gallery photos={photos} name={name} />
 
               {specs.length > 0 && (
@@ -132,22 +142,7 @@ export default async function VehicleDetailPage({ params }: { params: { slug: st
                   ))}
                 </ul>
               )}
-            </div>
-
-            <aside className="booking-box">
-              {v.daily_rate != null && (
-                <div className="booking-price-head">
-                  <span style={{ color: 'var(--text-dim)', fontSize: 13 }}>From</span>
-                  <strong>{formatCurrency(v.daily_rate)}</strong>
-                  <span className="per">/ day</span>
-                </div>
-              )}
-              <div className="badge-pending">Request to Book · Pending Verification</div>
-              <div style={{ marginTop: 16 }}>
-                <BookingRequestForm vehicleId={v.id} />
-              </div>
-            </aside>
-          </div>
+          </RentalBooking>
         </div>
       </section>
     </>
